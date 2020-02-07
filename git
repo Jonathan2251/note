@@ -1,0 +1,11 @@
+// delete remote branch
+git push origin --delete <branch>
+
+// delete local branch
+git branch -D <branch>
+
+// create local new branch
+git checkout -b <branch>
+// create remote branch
+git push --set-upstream origin <branch>
+

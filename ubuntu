@@ -1,0 +1,50 @@
+// My notebook computer Bios
+'del' to enter bios menu
+Security - Change Supervisor Passwd: 1234
+Authentication - Security Boot:disabled
+Boot option: 1. Removable Device 2. UEFI... 3. Windows
+
+// My notebook (2 ssd drive: 500GB and 1TB)
+1. set bios(press F2 when booting): Boot - Fast Boot [Disabled]
+2. windows - start - control panel - system & security - Power option - Change what the power buttons do - Change settings currently unavailable - Uncheck the item Turn on fast start up
+ref. solution 2 from https://windowsreport.com/fix-dual-boot-windows-10-ubuntu/
+
+
+// install ubuntu along with debian
+1. install debian with erasing the full disk (choose taiwan country and sever)
+2. shrink partition by GParted on unbuntu
+3. install ubuntu along with debian (default option)
+
+// add swap size ubuntu
+1. search "add swap size ubuntu"
+2. https://bogdancornianu.com/change-swap-size-in-ubuntu/
+3. add to boot by change to /swapfile                                 swap            swap    default              0       0
+https://linuxize.com/post/how-to-add-swap-space-on-ubuntu-18-04/
+4. reboot
+
+
+// chinese input setting
+http://shiunxun.blogspot.com/2018/04/ubuntu-1804.html
+setting - region & language - manage installed languages - install languages - Install / Remove Languages - add Chinese (simplifed) and (traditional) - apply - "restart computer" - + - Add a Input source - Other - Chinese (chewing)
+
+// Fix unclean file system (0,0) problem in mount
+sudo ntfsfix /dev/sda5
+sudo mount -t ntfs -o nls=utf8,umask=0222 /dev/sda5 /mnt/win-d
+
+// Netron install
+https://github.com/lutzroeder/netron/releases/tag/v3.3.2, click netron_3.3.2_amd64.deb, open and install it.
+
+// fix keyboard keying problem
+sudo apt-get install vim
+
+
+// mlir build
+1. build with clang: success, 9min
+
+
+// clang with llvm debug build with cmake results:
+conclusion: build with make -j6 first, and stop by "ctrl-c", then make -j1 -> avoid link fail.
+1. make -j6 with gcc: link time out fail
+2. make -j6 with clang: link time out fail
+3. make -l6 with clang: pass
+4. time ninja -l6 with gcc: : 
