@@ -13,3 +13,6 @@ git push --set-upstream origin <branch>
 git config --global user.email
 // set email
 git config --global user.email "email address"
+
+// set config
+vi .git/config
