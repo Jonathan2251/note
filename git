@@ -9,3 +9,7 @@ git checkout -b <branch>
 // create remote branch
 git push --set-upstream origin <branch>
 
+// check email
+git config --global user.email
+// set email
+git config --global user.email "email address"
