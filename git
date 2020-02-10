@@ -15,4 +15,5 @@ git config --global user.email
 git config --global user.email "email address"
 
 // set config
-vi .git/config
+vi .git/config 
+or git config user.email "gamma_chen@yahoo.com.tw"
