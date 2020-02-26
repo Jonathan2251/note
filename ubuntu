@@ -37,6 +37,9 @@ https://github.com/lutzroeder/netron/releases/tag/v3.3.2, click netron_3.3.2_amd
 // fix keyboard keying problem
 sudo apt-get install vim
 
+// install ssh server for scp
+sudo apt-get install openssh-server
+
 
 // mlir build
 1. build with clang: success, 9min
