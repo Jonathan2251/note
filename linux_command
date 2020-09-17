@@ -1,0 +1,11 @@
+search: linux rename files in subfolders
+$ find . -iname "*dbg*" -exec rename _dbg.txt .txt '{}' \; 
+what the '{}' and \; are?
+
+The -exec argument makes find execute rename for every matching file found. '{}' will be replaced with the path name of the file. The last token, \; is there only to mark the end of the exec expression.
+https://stackoverflow.com/questions/16541582/find-multiple-files-and-rename-them-in-linux
+
+
+1. rename *.cpp and *.hpp to *.cc and *.h
+find src/ -name "*.cpp" -exec rename -v 's/\.cpp$/\.cc/i' {} \;              // {
+find include/ -name "*.hpp" -exec rename -v 's/\.hpp$/\.h/i' {} \;
