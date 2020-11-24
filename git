@@ -11,6 +11,8 @@ git remote -v // see attached remote repo
 git fetch dev
 // checkout remote dev e00241 branch
 git checkout -b e00241 dev/e00241
+// push to dev
+git push dev
 
 // create local new branch
 git checkout -b <branch>
