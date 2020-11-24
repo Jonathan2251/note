@@ -5,6 +5,13 @@ ex. git push origin --delete jonathan_fix_bug_a
 // delete local branch
 git branch -D <branch>
 
+// attach dev branch
+git remote add dev git@github01.birentech.com:e00241/llvm-project.git
+git remote -v // see attached remote repo
+git fetch dev
+// checkout remote dev e00241 branch
+git checkout -b e00241 dev/e00241
+
 // create local new branch
 git checkout -b <branch>
 // create remote branch
