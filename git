@@ -19,6 +19,11 @@ git checkout -b <branch>
 // create remote branch
 git push --set-upstream origin <branch>
 
+// git merge the last 4 commits into 1
+git reset --soft HEAD~4
+git commit -m "<the merged descripition>"
+git push dev e00241
+
 // check email
 git config --global user.email
 // set email
