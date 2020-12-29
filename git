@@ -1,3 +1,18 @@
+// Biren steps
+// on master branch
+git remote add dev git@github01.birentech.com:e00241/llvm-project.git
+git remote -v // see attached remote repo
+git fetch dev
+git fetch origin // get the latest origin/master HEAD
+git checkout issue#
+// after work on the issue# branch
+git add; git commit; -> trigger clang-format installed in ~/git/llvm-project/.git/hooks/pre-commit, http://10.50.16.70:8090/display/SOF/tools, (please merge commit into single one commit)
+git rebase origin/master
+git push dev // push to dev/issue#
+// go to https://github01.birentech.com/software/llvm-project/ and create merge request
+// after CTS-verification and approve, select squash-merge or rebase-merge botton and click the botton, then it merges into origin/master
+
+
 Delete remote first, then local
 // delete remote branch
 git push origin --delete <branch>
@@ -10,7 +25,7 @@ git remote add dev git@github01.birentech.com:e00241/llvm-project.git
 git remote -v // see attached remote repo
 git fetch dev
 // checkout remote dev e00241 branch
-git checkout -b e00241 dev/e00241
+git checkout -b e00241 origin/e00241
 // push to dev
 git push dev
 
