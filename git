@@ -12,11 +12,15 @@ git push dev // push to dev/issue#
 // go to https://github01.birentech.com/software/llvm-project/ and create merge request
 // after CTS-verification and approve, select squash-merge or rebase-merge botton and click the botton, then it merges into origin/master
 
+// get someone's Pull Request
+// in master of orgin branch
+git pull origin pull/732/head
 
 Delete remote first, then local
 // delete remote branch
 git push origin --delete <branch>
 ex. git push origin --delete jonathan_fix_bug_a
+git remote update origin --prune
 // delete local branch
 git branch -D <branch>
 
