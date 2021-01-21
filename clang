@@ -1,0 +1,14 @@
+// use -Xclang to load shared library and pass argument to "clang -cc1"
+~/git/1/llvm-project/build/bin/clang++ -Xclang -load -Xclang ~/git/1/llvm-project/build/lib/PrintFunctionNames.so -Xclang -add-plugin -Xclang print-fns -Xclang -plugin-arg-print-fns -Xclang help -Xclang -emit-llvm -S hello.c -o -
+
+// use -v to see full clang -cc1 options
+clang++ -v hello.c
+
+// 
+// http://clang-developers.42468.n3.nabble.com/AST-modifications-that-apply-to-the-binary-td4054289.html
+BirenTensorAction::ActionType BirenTensorAction::getActionType() {
+  return AddBeforeMainAction;
+}
+
+bool BirenTensorAction::usesPreprocessorOnly() const { return false; }
+
