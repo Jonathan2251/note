@@ -12,3 +12,5 @@ BirenTensorAction::ActionType BirenTensorAction::getActionType() {
 
 bool BirenTensorAction::usesPreprocessorOnly() const { return false; }
 
+// rewrite ast nodes
+https://blog.csdn.net/sfdazsdf/article/details/46975169
