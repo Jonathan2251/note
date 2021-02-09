@@ -16,3 +16,14 @@ bool BirenTensorAction::usesPreprocessorOnly() const { return false; }
 https://blog.csdn.net/sfdazsdf/article/details/46975169
 
 ARC(Automatic Reference Count) Migrate
+
+example: 
+  https://github.com/eliben/llvm-clang-samples
+  commit c9abc99560f201e98fc3892a6be79237bd505efb
+  Author: Eli Bendersky <eliben@google.com>
+  Date:   Tue Sep 18 09:21:57 2018 -0700
+
+    Make stop image smaller
+  llvm-clang-samples.patch
+  build with llvm-6.0.0
+

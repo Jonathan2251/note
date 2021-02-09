@@ -1,0 +1,74 @@
+diff --git a/Makefile b/Makefile
+index 0d7f600..11bcba3 100644
+--- a/Makefile
++++ b/Makefile
+@@ -51,7 +51,7 @@
+ #  6. -Wl,--start-group \   changed to  -Wl, \
+ #  7  -Wl,--end-group    changed to  -Wl,
+ 
+-LLVM_SRC_PATH := $$HOME/llvm/llvm_svn_rw
++LLVM_SRC_PATH := $HOME/llvm/6.0.0/llvm
+ 
+ # LLVM_BUILD_PATH is the directory in which you built LLVM - where you ran
+ # configure or cmake.
+@@ -60,7 +60,7 @@ LLVM_SRC_PATH := $$HOME/llvm/llvm_svn_rw
+ # process. It should contain the tools like opt, llc and clang. The default
+ # reflects a release build with CMake and Ninja. binary build of LLVM, point it
+ # to the bin/ directory.
+-LLVM_BUILD_PATH := $$HOME/llvm/build/svn-ninja-release
++LLVM_BUILD_PATH := $HOME/llvm/6.0.0/build/
+ LLVM_BIN_PATH 	:= $(LLVM_BUILD_PATH)/bin
+ 
+ $(info -----------------------------------------------)
+@@ -130,7 +130,7 @@ BUILDDIR := build
+ 
+ .PHONY: all
+ all: make_builddir \
+-	emit_build_config \
++  emit_build_config \
+ 	$(BUILDDIR)/bb_toposort_sccs \
+ 	$(BUILDDIR)/simple_module_pass \
+ 	$(BUILDDIR)/simple_bb_pass \
+@@ -154,6 +154,7 @@ emit_build_config: make_builddir
+ 
+ .PHONY: make_builddir
+ make_builddir:
++  @echo "CLANG_INCLUDES: " ${CLANG_INCLUDES}
+ 	@test -d $(BUILDDIR) || mkdir $(BUILDDIR)
+ 
+ $(BUILDDIR)/simple_bb_pass: $(SRC_LLVM_DIR)/simple_bb_pass.cpp
+diff --git a/build_vs_released_binary.sh b/build_vs_released_binary.sh
+index 4aaa1ed..5aeac2f 100755
+--- a/build_vs_released_binary.sh
++++ b/build_vs_released_binary.sh
+@@ -15,12 +15,13 @@
+ set -eu
+ set -x
+ 
+-BINARY_DIR_PATH=${BINARY_DIR_PATH:-$HOME/llvm/llvm6.0-binaries}
++BINARY_DIR_PATH=${BINARY_DIR_PATH:-$HOME/llvm/6.0.0/build}
++echo "BINARY_DIR_PATH: " ${BINARY_DIR_PATH}
+ 
+ make -j8 \
+   CXX=$BINARY_DIR_PATH/bin/clang++ \
+-  LLVM_SRC_PATH=$BINARY_DIR_PATH \
+-  LLVM_BUILD_PATH=$BINARY_DIR_PATH/bin \
++  LLVM_SRC_PATH=$HOME/llvm/6.0.0/llvm \
++  LLVM_BUILD_PATH=$BINARY_DIR_PATH \
+   LLVM_BIN_PATH=$BINARY_DIR_PATH/bin
+ 
+ make LLVM_BIN_PATH=$BINARY_DIR_PATH/bin test
+diff --git a/src_clang/ClangCheck.cpp b/src_clang/ClangCheck.cpp
+index cedc602..838a870 100644
+--- a/src_clang/ClangCheck.cpp
++++ b/src_clang/ClangCheck.cpp
+@@ -147,8 +147,7 @@ public:
+     if (ASTList)
+       return clang::CreateASTDeclNodeLister();
+     if (ASTDump)
+-      return clang::CreateASTDumper(nullptr /*Dump to stdout.*/,
+-                                    ASTDumpFilter,
++      return clang::CreateASTDumper(ASTDumpFilter,
+                                     /*DumpDecls=*/true,
+                                     /*Deserialize=*/false,
+                                     /*DumpLookups=*/false);
