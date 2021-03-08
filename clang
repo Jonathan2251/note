@@ -27,3 +27,5 @@ example:
   llvm-clang-samples.patch
   build with llvm-6.0.0
 
+// clang AST structure
+http://swtv.kaist.ac.kr/courses/cs453-fall13/Clang%20tutorial%20v4.pdf

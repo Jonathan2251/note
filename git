@@ -12,6 +12,21 @@ git push dev // push to dev/issue#
 // go to https://github01.birentech.com/software/llvm-project/ and create merge request
 // after CTS-verification and approve, select squash-merge or rebase-merge botton and click the botton, then it merges into origin/master
 
+// git Subject's rules
+https://chris.beams.io/posts/git-commit/
+
+The seven rules of a great Git commit message
+
+Separate subject from body with a blank line
+	Limit the subject line to 50 characters
+	Capitalize the subject line
+	Do not end the subject line with a period
+	Use the imperative mood in the subject line
+	Wrap the body at 72 characters
+	Use the body to explain what and why vs. how
+
+
+
 // get someone's Pull Request
 // in master of orgin branch
 git pull origin pull/732/head
