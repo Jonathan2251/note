@@ -1,0 +1,116 @@
+﻿1. Install riscv gnu toolchain:
+https://github.com/riscv/riscv-gnu-toolchain
+
+Build with branch rvv-intrinsic will get rvv support as follows,
+
+/local/git/riscv-gnu-toolchain$ git branch -v -a
+  master                              b39e361 Merge pull request #963 from sickcodes/sickcodes-patch-1
+* rvv-intrinsic                       28271f0 Bump qemu for RVV 0.10
+  remotes/origin/HEAD                 -> origin/master
+  ...
+  remotes/origin/rvv-intrinsic        28271f0 Bump qemu for RVV 0.10
+  
+/local/git$ /opt/riscv/bin/riscv64-unknown-elf-objdump -d rn50-demo.elf |less
+0000000000012230 <riscv_nn_conv_1x1_HWC_f16_f16_f16_bias_fast_any_trans_interleave>:
+   12230:       7129                    addi    sp,sp,-320
+   ...
+   12512:       02081057                vfadd.vv        v0,v0,v16
+   12516:       02281157                vfadd.vv        v2,v2,v16
+   1251a:       02481257                vfadd.vv        v4,v4,v16
+   1251e:       02681357                vfadd.vv        v6,v6,v16
+   12522:       02881457                vfadd.vv        v8,v8,v16
+   12526:       02a81557                vfadd.vv        v10,v10,v16
+   1252a:       02c81657                vfadd.vv        v12,v12,v16
+   1252e:       02e81757                vfadd.vv        v14,v14,v16
+
+
+2. Build llvm-riscv:
+
+A.
+/local/git/llvm-project/build_riscv64$
+cmake -G "Unix Makefiles" -DLLVM_ENABLE_PROJECTS="clang;clang-tools-extra;libcxx;libcxxabi;libunwind;lldb;compiler-rt;lld;polly" -DCMAKE_BUILD_TYPE=Debug \
+  -DDEFAULT_SYSROOT="/local/riscv/riscv64-unknown-elf" -DGCC_INSTALL_PREFIX="/local/riscv" \
+  -DLLVM_DEFAULT_TARGET_TRIPLE="riscv64-unknown-elf" \
+  -DLIBCXXABI_USE_LLVM_UNWINDER=YES \
+  -DCLANG_DEFAULT_RTLIB=compiler-rt \
+  -DLLVM_TARGETS_TO_BUILD="RISCV" ../llvm
+
+cmake -G "Unix Makefiles" -DLLVM_ENABLE_PROJECTS="clang;clang-tools-extra;libcxx;libcxxabi;libunwind;lldb;compiler-rt;lld;polly" -DCMAKE_BUILD_TYPE=Debug \
+  -DDEFAULT_SYSROOT="/local/riscv/riscv64-unknown-elf" -DGCC_INSTALL_PREFIX="/local/riscv" \
+  -DLLVM_DEFAULT_TARGET_TRIPLE="riscv64-unknown-elf" \
+  -DLIBCXXABI_USE_LLVM_UNWINDER=YES \
+  -DLLVM_TARGETS_TO_BUILD="RISCV" ../llvm
+  -
+
+C. /local/git/llvm-project/build_riscv64_linux$
+cmake -G "Unix Makefiles" -DLLVM_ENABLE_PROJECTS="clang;libcxx;libcxxabi;libunwind;lldb;compiler-rt;lld" -DCMAKE_BUILD_TYPE=Debug \
+  -DDEFAULT_SYSROOT="/local/riscv/sysroot" -DGCC_INSTALL_PREFIX="/local/riscv" \
+  -DLLVM_DEFAULT_TARGET_TRIPLE="riscv64-unknown-linux-gnu" \
+  -DLIBCXXABI_USE_LLVM_UNWINDER=YES \
+  -DCLANG_DEFAULT_RTLIB=compiler-rt \
+  -DLLVM_TARGETS_TO_BUILD="RISCV" ../llvm
+
+
+cmake -G Ninja -DCMAKE_BUILD_TYPE=Debug -DLLVM_TARGETS_TO_BUILD="RISCV" -DLLVM_ENABLE_PROJECTS="clang" \
+ -DLLVM_BINUTILS_INCDIR=/local/git/riscv-gnu-toolchain/riscv-binutils/include \
+ -DCMAKE_INSTALL_PREFIX=/local/riscv -DLLVM_PARALLEL_COMPILE_JOBS=4 \
+ -DLLVM_PARALLEL_LINK_JOBS=1 -DCMAKE_LINKER=`which ld.gold` -DLLVM_DEFAULT_TARGET_TRIPLE=riscv64-unknown-linux-gnu \
+ -DCMAKE_C_FLAGS_DEBUG="-O0 -g3" -DCMAKE_CXX_FLAGS_DEBUG="-O0 -g3" -DDEFAULT_SYSROOT=/local/riscv/sysroot -DLLVM_INSTALL_UTILS=ON \
+ ../llvm
+
+cmake -G Ninja -DCMAKE_BUILD_TYPE=Debug -DLLVM_TARGETS_TO_BUILD="RISCV" -DLLVM_ENABLE_PROJECTS="clang" -DLLVM_BINUTILS_INCDIR=/local/git/riscv-gnu-toolchain/riscv-binutils/include -DCMAKE_INSTALL_PREFIX=/local/git/riscv-llvm-rvv-linux -DLLVM_PARALLEL_COMPILE_JOBS=4 -DLLVM_PARALLEL_LINK_JOBS=1 -DCMAKE_LINKER=`which ld.gold` - DLLVM_DEFAULT_TARGET_TRIPLE=riscv64-unknown-linux-gnu -DCMAKE_C_FLAGS_DEBUG="-O0 -g3" -DCMAKE_CXX_FLAGS_DEBUG="-O0 -g3" -DDEFAULT_SYSROOT=/opt/riscv/sysroot -DLLVM_INSTALL_UTILS=ON ../llvm-project/llvm
+ 
+ 
+
+3. Test:
+
+/local/git$ /local/git/llvm-project/build_riscv64_nocompilerrt/bin/clang -stdlib=libc++ -Wl,-rpath,/local/git/llvm-project/build_riscv64_nocompilerrt/lib hello.c -o a.out
+clang-12: warning: argument unused during compilation: '-stdlib=libc++' [-Wunused-command-line-argument]
+ld.lld: error: unable to find library -lclang_rt.builtins-riscv64
+clang-12: error: ld.lld command failed with exit code 1 (use -v to see invocation)
+
+/local/git$ /local/git/llvm-project/build_riscv64/bin/clang -L/local/git/llvm-project/build_riscv64/lib hello.c -o a.out
+ld.lld: error: unable to find library -lclang_rt.builtins-riscv64
+
+
+/local/git$ /local/git/llvm-project/build_riscv64_nocompilerrt/bin/clang -L/local/git/llvm-project/build_riscv64_nocompilerrt/lib hello.c -o a.out
+ld.lld: error: unable to find library -lclang_rt.builtins-riscv64
+
+/local/git/llvm-project/build_riscv64/bin/clang -L/local/git/llvm-project/build_riscv64/lib -L/local/git/llvm-project/build_riscv64/lib/clang/12.0.1/lib/linux hello.c -o a.out
+
+/local/git/llvm-project/build_riscv64_linux/bin/clang -L/local/git/llvm-project/build_riscv64_linux/lib -L/local/git/llvm-project/build_riscv64_linux/lib/clang/12.0.1/lib/linux hello.c -o a.out
+
+
+/local/git$ /local/git/llvm-project/build_zakk/bin/clang -L/local/git/llvm-project/build_zakk/lib hello.c -o a.out
+
+
+
+
+Ref.
+
+cmake -G "Unix Makefiles" -DLLVM_ENABLE_PROJECTS="clang;libcxx;libcxxabi;libunwind;lldb;lld" -DCMAKE_BUILD_TYPE=Debug \
+  -DDEFAULT_SYSROOT="/opt/riscv/riscv64-unknown-elf" -DGCC_INSTALL_PREFIX="/opt/riscv" \
+  -DLLVM_DEFAULT_TARGET_TRIPLE="riscv64-unknown-elf" \
+  -DCLANG_DEFAULT_RTLIB=compiler-rt \
+  -DLLVM_TARGETS_TO_BUILD="RISCV" ../llvm
+
+
+cmake -G "Unix Makefiles" -DLLVM_ENABLE_PROJECTS="clang;lld" -DCMAKE_BUILD_TYPE=Debug \
+  -DDEFAULT_SYSROOT="/opt/riscv/riscv64-unknown-elf" -DGCC_INSTALL_PREFIX="/opt/riscv" \
+  -DLLVM_DEFAULT_TARGET_TRIPLE="riscv64-unknown-elf" \
+  -DLLVM_TARGETS_TO_BUILD="RISCV" ../llvm
+
+
+
+search "riscv llvm toolchain":
+https://github.com/andestech/riscv-llvm-toolchain
+https://stackoverflow.com/questions/68580399/using-clang-to-compile-for-risc-v
+https://mucrolores.medium.com/risc-v-llvm-setup-in-ubuntu-a27652a5b9a8
+https://junningwu.haawking.com/tech/2020/04/24/Building-a-working-GCC+LLVM+Newlib-Toolchain-on-Windows-for-RISC-V/
+
+
+
+
+riscv:
+cmake -G "Unix Makefiles" -DLLVM_ENABLE_PROJECTS="clang;clang-tools-extra;libcxx;libcxxabi;libunwind;lldb;compiler-rt;lld;polly;debuginfo-tests" -DCMAKE_BUILD_TYPE=Debug -DLLVM_ENABLE_ASSERTIONS=On -DDEFAULT_SYSROOT="/home/jonathanchen/git/riscv-gnu-toolchain/linux-headers" -DGCC_INSTALL_PREFIX="/home/jonathanchen/git/riscv-gnu-toolchain" ../llvm
+
