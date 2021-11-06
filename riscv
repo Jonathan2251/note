@@ -23,8 +23,25 @@ Build with branch rvv-intrinsic will get rvv support as follows,
    1252a:       02c81657                vfadd.vv        v12,v12,v16
    1252e:       02e81757                vfadd.vv        v14,v14,v16
 
+2. Pass for running hello.c
 
-2. Build llvm-riscv:
+./configure --prefix=/home/cschen/riscv-master --with-multilib-generator="rv32i-ilp32--;rv32imafd-ilp32--;rv64ima-lp64--"
+make
+
+cmake -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Debug -DLLVM_TARGETS_TO_BUILD="RISCV" -DLLVM_ENABLE_PROJECTS="clang"  -DLLVM_BINUTILS_INCDIR=/home/cschen/git/riscv-gnu-toolchain/riscv-binutils/include  -DCMAKE_INSTALL_PREFIX=/home/cschen/riscv-master -DLLVM_PARALLEL_COMPILE_JOBS=4  -DLLVM_PARALLEL_LINK_JOBS=1 -DLLVM_DEFAULT_TARGET_TRIPLE=riscv64-unknown-elf -DDEFAULT_SYSROOT=/home/cschen/riscv-master/riscv64-unknown-elf -DLLVM_INSTALL_UTILS=ON ../llvm
+make install .
+
+:~/git$ ~/riscv-master/bin/clang -march=riscv64 hello.c -v
+...
+clang-14: error: invalid arch name 'riscv64', string must begin with rv32{i,e,g} or rv64{i,g}
+
+
+~/git$ ~/riscv-master/bin/clang -march=rv64g hello.c -v
+
+
+
+3. Other: 
+Build llvm-riscv:
 
 A.
 /local/git/llvm-project/build_riscv64$
@@ -57,6 +74,11 @@ cmake -G Ninja -DCMAKE_BUILD_TYPE=Debug -DLLVM_TARGETS_TO_BUILD="RISCV" -DLLVM_E
  -DLLVM_PARALLEL_LINK_JOBS=1 -DCMAKE_LINKER=`which ld.gold` -DLLVM_DEFAULT_TARGET_TRIPLE=riscv64-unknown-linux-gnu \
  -DCMAKE_C_FLAGS_DEBUG="-O0 -g3" -DCMAKE_CXX_FLAGS_DEBUG="-O0 -g3" -DDEFAULT_SYSROOT=/local/riscv/sysroot -DLLVM_INSTALL_UTILS=ON \
  ../llvm
+
+
+cmake -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Debug -DLLVM_TARGETS_TO_BUILD="RISCV" -DLLVM_ENABLE_PROJECTS="clang"  -DLLVM_BINUTILS_INCDIR=/home/cschen/git/riscv-gnu-toolchain/riscv-binutils/include  -DCMAKE_INSTALL_PREFIX=/home/cschen/riscv-master -DLLVM_PARALLEL_COMPILE_JOBS=4  -DLLVM_PARALLEL_LINK_JOBS=1 -DLLVM_DEFAULT_TARGET_TRIPLE=riscv64-unknown-elf -DDEFAULT_SYSROOT=/home/cschen/riscv-master/riscv64-unknown-elf -DLLVM_INSTALL_UTILS=ON ../llvm
+
+
 
 cmake -G Ninja -DCMAKE_BUILD_TYPE=Debug -DLLVM_TARGETS_TO_BUILD="RISCV" -DLLVM_ENABLE_PROJECTS="clang" -DLLVM_BINUTILS_INCDIR=/local/git/riscv-gnu-toolchain/riscv-binutils/include -DCMAKE_INSTALL_PREFIX=/local/git/riscv-llvm-rvv-linux -DLLVM_PARALLEL_COMPILE_JOBS=4 -DLLVM_PARALLEL_LINK_JOBS=1 -DCMAKE_LINKER=`which ld.gold` - DLLVM_DEFAULT_TARGET_TRIPLE=riscv64-unknown-linux-gnu -DCMAKE_C_FLAGS_DEBUG="-O0 -g3" -DCMAKE_CXX_FLAGS_DEBUG="-O0 -g3" -DDEFAULT_SYSROOT=/opt/riscv/sysroot -DLLVM_INSTALL_UTILS=ON ../llvm-project/llvm
  
