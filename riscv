@@ -25,10 +25,15 @@ Build with branch rvv-intrinsic will get rvv support as follows,
 
 2. Pass for running hello.c
 
-./configure --prefix=/home/cschen/riscv-master --with-multilib-generator="rv32i-ilp32--;rv32imafd-ilp32--;rv64ima-lp64--"
+~/llvm/llvm-project$ git log
+commit 845561ec9d009445c99b51b61810b57bb03e1303 (HEAD -> main, origin/main, origin/HEAD)
+
+~/git/branch-master/riscv-gnu-toolchain$./configure --prefix=/home/cschen/riscv-master --with-multilib-generator="rv32i-ilp32--;rv32imafd-ilp32--;rv64ima-lp64--"
 make
 
-cmake -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Debug -DLLVM_TARGETS_TO_BUILD="RISCV" -DLLVM_ENABLE_PROJECTS="clang"  -DLLVM_BINUTILS_INCDIR=/home/cschen/git/riscv-gnu-toolchain/riscv-binutils/include  -DCMAKE_INSTALL_PREFIX=/home/cschen/riscv-master -DLLVM_PARALLEL_COMPILE_JOBS=4  -DLLVM_PARALLEL_LINK_JOBS=1 -DLLVM_DEFAULT_TARGET_TRIPLE=riscv64-unknown-elf -DDEFAULT_SYSROOT=/home/cschen/riscv-master/riscv64-unknown-elf -DLLVM_INSTALL_UTILS=ON ../llvm
+~/llvm/llvm-project/b_riscv64$
+cmake -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Debug -DLLVM_TARGETS_TO_BUILD="RISCV" -DLLVM_ENABLE_PROJECTS="clang;lld"  -DLLVM_BINUTILS_INCDIR=/home/cschen/git/riscv-gnu-toolchain/riscv-binutils/include  -DCMAKE_INSTALL_PREFIX=/home/cschen/riscv-master -DLLVM_PARALLEL_COMPILE_JOBS=4  -DLLVM_PARALLEL_LINK_JOBS=1 -DLLVM_DEFAULT_TARGET_TRIPLE=riscv64-unknown-elf -DDEFAULT_SYSROOT=/home/cschen/riscv-master/riscv64-unknown-elf -DLLVM_INSTALL_UTILS=ON ../llvm
+make -j4
 make install .
 
 :~/git$ ~/riscv-master/bin/clang -march=riscv64 hello.c -v
@@ -38,6 +43,18 @@ clang-14: error: invalid arch name 'riscv64', string must begin with rv32{i,e,g}
 
 ~/git$ ~/riscv-master/bin/clang -march=rv64g hello.c -v
 
+
+
+~/git/branch-rvv-intrinsic/riscv-gnu-toolchain$./configure --prefix=/home/cschen/riscv-rvv-intrinsic --with-multilib-generator="rv32i-ilp32--;rv32imafd-ilp32--;rv64ima-lp64--"
+make
+
+~/llvm/llvm-project/b_riscv64_rvv-intrinsic$
+cmake -G "Ninja" -DCMAKE_BUILD_TYPE=Debug -DLLVM_TARGETS_TO_BUILD="RISCV" -DLLVM_ENABLE_PROJECTS="clang;lld"  -DLLVM_BINUTILS_INCDIR=/home/cschen/git/branch-rvv-intrinsic/riscv-gnu-toolchain/riscv-binutils/include  -DCMAKE_INSTALL_PREFIX=/home/cschen/riscv-rvv-intrinsic -DLLVM_PARALLEL_COMPILE_JOBS=4  -DLLVM_PARALLEL_LINK_JOBS=1 -DLLVM_DEFAULT_TARGET_TRIPLE=riscv64-unknown-elf -DDEFAULT_SYSROOT=/home/cschen/riscv-rvv-intrinsic/riscv64-unknown-elf -DLLVM_INSTALL_UTILS=ON ../llvm
+ninja
+ninja install
+
+~/git$ /home/cschen/riscv-rvv-intrinsic/bin/clang hello.c -o hello_rvv -v
+~/git$ /home/cschen/riscv-rvv-intrinsic/bin/clang -march=rv64g hello.c -o hello_rvv -v
 
 
 3. Other: 
