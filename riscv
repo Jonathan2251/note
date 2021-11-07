@@ -44,6 +44,15 @@ clang-14: error: invalid arch name 'riscv64', string must begin with rv32{i,e,g}
 ~/git$ ~/riscv-master/bin/clang -march=rv64g hello.c -v
 
 
+// pass with linux-gnu for hello.c
+~/llvm/llvm-project/b_riscv64$ cmake -G "Ninja" -DCMAKE_BUILD_TYPE=Debug -DLLVM_TARGETS_TO_BUILD="RISCV" -DLLVM_ENABLE_PROJECTS="clang;lld"  -DLLVM_BINUTILS_INCDIR=/home/cschen/git/riscv-gnu-toolchain/riscv-binutils/include  -DCMAKE_INSTALL_PREFIX=/home/cschen/riscv-master -DLLVM_PARALLEL_COMPILE_JOBS=4  -DLLVM_PARALLEL_LINK_JOBS=1 -DLLVM_DEFAULT_TARGET_TRIPLE=riscv64-unknown-linux-gnu -DDEFAULT_SYSROOT=/home/cschen/riscv-master/sysroot -DLLVM_INSTALL_UTILS=ON ../llvm
+ 
+ninja
+ninja install
+~/git$ ~/riscv-master/bin/clang -march=rv64g hello.c -v
+~/git$ ~/riscv-master/bin/clang hello.c -v
+
+
 
 ~/git/branch-rvv-intrinsic/riscv-gnu-toolchain$./configure --prefix=/home/cschen/riscv-rvv-intrinsic --with-multilib-generator="rv32i-ilp32--;rv32imafd-ilp32--;rv64ima-lp64--"
 make
