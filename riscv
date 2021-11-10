@@ -52,7 +52,9 @@ ninja install
 ~/git$ ~/riscv-master/bin/clang -march=rv64g hello.c -v
 ~/git$ ~/riscv-master/bin/clang hello.c -v
 
-
+// linux multi-lib build will fail, so no multi-lib
+~/git/branch-rvv-intrinsic/riscv-gnu-toolchain$./configure --prefix=/home/cschen/riscv-rvv-intrinsic
+make linux
 
 ~/git/branch-rvv-intrinsic/riscv-gnu-toolchain$./configure --prefix=/home/cschen/riscv-rvv-intrinsic --with-multilib-generator="rv32i-ilp32--;rv32imafd-ilp32--;rv64ima-lp64--"
 make
@@ -64,6 +66,16 @@ ninja install
 
 ~/git$ /home/cschen/riscv-rvv-intrinsic/bin/clang hello.c -o hello_rvv -v
 ~/git$ /home/cschen/riscv-rvv-intrinsic/bin/clang -march=rv64g hello.c -o hello_rvv -v
+
+
+~/llvm/llvm-project/b_riscv64_linux_rvv-intrinsic$
+cmake -G "Ninja" -DCMAKE_BUILD_TYPE=Debug -DLLVM_TARGETS_TO_BUILD="RISCV" -DLLVM_ENABLE_PROJECTS="clang;lld"  -DLLVM_BINUTILS_INCDIR=/local/git/riscv-gnu-toolchain/rvv-intrinsic/linux/riscv-gnu-toolchain/riscv-binutils/include -DCMAKE_INSTALL_PREFIX=/local/linux-riscv-rvv-intrinsic -DLLVM_PARALLEL_COMPILE_JOBS=4  -DLLVM_PARALLEL_LINK_JOBS=1 -DLLVM_DEFAULT_TARGET_TRIPLE=riscv64-unknown-linux-gnu -DDEFAULT_SYSROOT=/local/linux-riscv-rvv-intrinsic/sysroot -DLLVM_INSTALL_UTILS=ON ../llvm
+
+ninja
+ninja install
+
+~/git$ /home/cschen/riscv-rvv-intrinsic/riscv-linux-clang/bin/clang hello.c -o hello_rvv -v
+~/git$ /home/cschen/riscv-rvv-intrinsic/riscv-linux-clang/bin/clang -march=rv64g hello.c -o hello_rvv -v
 
 
 3. Other: 
