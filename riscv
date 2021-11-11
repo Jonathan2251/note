@@ -25,57 +25,38 @@ Build with branch rvv-intrinsic will get rvv support as follows,
 
 2. Pass for running hello.c
 
+build: reference riscv-toolchain-setup.sh
+
 ~/llvm/llvm-project$ git log
 commit 845561ec9d009445c99b51b61810b57bb03e1303 (HEAD -> main, origin/main, origin/HEAD)
 
-~/git/branch-master/riscv-gnu-toolchain$./configure --prefix=/home/cschen/riscv-master --with-multilib-generator="rv32i-ilp32--;rv32imafd-ilp32--;rv64ima-lp64--"
-make
+A. bare-metal (newlib):
 
-~/llvm/llvm-project/b_riscv64$
-cmake -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Debug -DLLVM_TARGETS_TO_BUILD="RISCV" -DLLVM_ENABLE_PROJECTS="clang;lld"  -DLLVM_BINUTILS_INCDIR=/home/cschen/git/riscv-gnu-toolchain/riscv-binutils/include  -DCMAKE_INSTALL_PREFIX=/home/cschen/riscv-master -DLLVM_PARALLEL_COMPILE_JOBS=4  -DLLVM_PARALLEL_LINK_JOBS=1 -DLLVM_DEFAULT_TARGET_TRIPLE=riscv64-unknown-elf -DDEFAULT_SYSROOT=/home/cschen/riscv-master/riscv64-unknown-elf -DLLVM_INSTALL_UTILS=ON ../llvm
-make -j4
-make install .
-
-:~/git$ ~/riscv-master/bin/clang -march=riscv64 hello.c -v
+/local/git$ /local/riscv_newlib/bin/clang -march=riscv64 hello.c -v
 ...
 clang-14: error: invalid arch name 'riscv64', string must begin with rv32{i,e,g} or rv64{i,g}
 
+pass:
+/local/riscv_newlib/bin/clang hello.c -o hello_newlib -v
+/local/riscv_newlib/bin/clang -march=rv64g hello.c -o hello_newlib -v
+/local/riscv_newlib/bin/clang -fuse-ld=lld -march=rv64g hello.c -o hello_newlib -v
 
-~/git$ ~/riscv-master/bin/clang -march=rv64g hello.c -v
-
-
-// pass with linux-gnu for hello.c
-~/llvm/llvm-project/b_riscv64$ cmake -G "Ninja" -DCMAKE_BUILD_TYPE=Debug -DLLVM_TARGETS_TO_BUILD="RISCV" -DLLVM_ENABLE_PROJECTS="clang;lld"  -DLLVM_BINUTILS_INCDIR=/home/cschen/git/riscv-gnu-toolchain/riscv-binutils/include  -DCMAKE_INSTALL_PREFIX=/home/cschen/riscv-master -DLLVM_PARALLEL_COMPILE_JOBS=4  -DLLVM_PARALLEL_LINK_JOBS=1 -DLLVM_DEFAULT_TARGET_TRIPLE=riscv64-unknown-linux-gnu -DDEFAULT_SYSROOT=/home/cschen/riscv-master/sysroot -DLLVM_INSTALL_UTILS=ON ../llvm
- 
-ninja
-ninja install
-~/git$ ~/riscv-master/bin/clang -march=rv64g hello.c -v
-~/git$ ~/riscv-master/bin/clang hello.c -v
-
-// linux multi-lib build will fail, so no multi-lib
-~/git/branch-rvv-intrinsic/riscv-gnu-toolchain$./configure --prefix=/home/cschen/riscv-rvv-intrinsic
-make linux
-
-~/git/branch-rvv-intrinsic/riscv-gnu-toolchain$./configure --prefix=/home/cschen/riscv-rvv-intrinsic --with-multilib-generator="rv32i-ilp32--;rv32imafd-ilp32--;rv64ima-lp64--"
-make
-
-~/llvm/llvm-project/b_riscv64_rvv-intrinsic$
-cmake -G "Ninja" -DCMAKE_BUILD_TYPE=Debug -DLLVM_TARGETS_TO_BUILD="RISCV" -DLLVM_ENABLE_PROJECTS="clang;lld"  -DLLVM_BINUTILS_INCDIR=/home/cschen/git/branch-rvv-intrinsic/riscv-gnu-toolchain/riscv-binutils/include  -DCMAKE_INSTALL_PREFIX=/home/cschen/riscv-rvv-intrinsic -DLLVM_PARALLEL_COMPILE_JOBS=4  -DLLVM_PARALLEL_LINK_JOBS=1 -DLLVM_DEFAULT_TARGET_TRIPLE=riscv64-unknown-elf -DDEFAULT_SYSROOT=/home/cschen/riscv-rvv-intrinsic/riscv64-unknown-elf -DLLVM_INSTALL_UTILS=ON ../llvm
-ninja
-ninja install
-
-~/git$ /home/cschen/riscv-rvv-intrinsic/bin/clang hello.c -o hello_rvv -v
-~/git$ /home/cschen/riscv-rvv-intrinsic/bin/clang -march=rv64g hello.c -o hello_rvv -v
+fail:
+/local/riscv_newlib/bin/clang -fuse-ld=lld hello.c -o hello_newlib -v
+ld.lld: error: hello.c:(.text+0x0): relocation R_RISCV_ALIGN requires unimplemented linker relaxation; recompile with -mno-relax
 
 
-~/llvm/llvm-project/b_riscv64_linux_rvv-intrinsic$
-cmake -G "Ninja" -DCMAKE_BUILD_TYPE=Debug -DLLVM_TARGETS_TO_BUILD="RISCV" -DLLVM_ENABLE_PROJECTS="clang;lld"  -DLLVM_BINUTILS_INCDIR=/local/git/riscv-gnu-toolchain/rvv-intrinsic/linux/riscv-gnu-toolchain/riscv-binutils/include -DCMAKE_INSTALL_PREFIX=/local/linux-riscv-rvv-intrinsic -DLLVM_PARALLEL_COMPILE_JOBS=4  -DLLVM_PARALLEL_LINK_JOBS=1 -DLLVM_DEFAULT_TARGET_TRIPLE=riscv64-unknown-linux-gnu -DDEFAULT_SYSROOT=/local/linux-riscv-rvv-intrinsic/sysroot -DLLVM_INSTALL_UTILS=ON ../llvm
+B. linux:
 
-ninja
-ninja install
+pass:
+/local/riscv_linux/bin/clang hello.c -o hello_linux -v
+/local/riscv_linux/bin/clang -march=rv64g hello.c -o hello_linux -v
 
-~/git$ /home/cschen/riscv-rvv-intrinsic/riscv-linux-clang/bin/clang hello.c -o hello_rvv -v
-~/git$ /home/cschen/riscv-rvv-intrinsic/riscv-linux-clang/bin/clang -march=rv64g hello.c -o hello_rvv -v
+fail:
+/local/riscv_linux/bin/clang -fuse-ld=lld -march=rv64g hello.c -o hello_linux -v
+ld.lld: error: static-reloc.c:(.text+0x0): relocation R_RISCV_ALIGN requires unimplemented linker relaxation; recompile with -mno-relax
+/local/riscv_linux/bin/clang -fuse-ld=lld hello.c -o hello_linux -v
+ld.lld: error: static-reloc.c:(.text+0x0): relocation R_RISCV_ALIGN requires unimplemented linker relaxation; recompile with -mno-relax
 
 
 3. Other: 
