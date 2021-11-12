@@ -38,8 +38,13 @@ clang-14: error: invalid arch name 'riscv64', string must begin with rv32{i,e,g}
 
 pass:
 /local/riscv_newlib/bin/clang hello.c -o hello_newlib -v
-/local/riscv_newlib/bin/clang -march=rv64g hello.c -o hello_newlib -v
 /local/riscv_newlib/bin/clang -fuse-ld=lld -march=rv64g hello.c -o hello_newlib -v
+/local/riscv_newlib/bin/clang -march=rv32i -mabi=ilp32 hello.c -o hello_newlib_rv32i -v
+/local/riscv_newlib/bin/clang -march=rv64g hello.c -o hello_newlib_rv64g -v
+ls -l
+223492 Nov 12 06:48 hello_newlib_rv32i
+132448 Nov 12 06:48 hello_newlib_rv64g
+
 
 fail:
 /local/riscv_newlib/bin/clang -fuse-ld=lld hello.c -o hello_newlib -v
