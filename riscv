@@ -41,9 +41,13 @@ pass:
 /local/riscv_newlib/bin/clang -fuse-ld=lld -march=rv64g hello.c -o hello_newlib -v
 /local/riscv_newlib/bin/clang -march=rv32i -mabi=ilp32 hello.c -o hello_newlib_rv32i -v
 /local/riscv_newlib/bin/clang -march=rv64g hello.c -o hello_newlib_rv64g -v
+/local/riscv_newlib/bin/clang -march=rv64imac -mabi=lp64 hello.c -o hello_newlib -v
 ls -l
 223492 Nov 12 06:48 hello_newlib_rv32i
 132448 Nov 12 06:48 hello_newlib_rv64g
+ls /local/riscv_newlib/riscv64-unknown-elf/lib
+crt0.o     libc.a       libg.a       libgloss.a       libm.a       libnosys.a  nano.specs   rv32i    rv32im    rv32imafc  rv64imafdc
+ldscripts  libc_nano.a  libg_nano.a  libgloss_nano.a  libm_nano.a  libsim.a    nosys.specs  rv32iac  rv32imac  rv64imac   sim.specs
 
 
 fail:
