@@ -74,6 +74,21 @@ https://github.com/riscv-software-src/homebrew-riscv
 
 build_riscv_newlib % cmake -G "Ninja" -DCMAKE_BUILD_TYPE=Debug -DLLVM_TARGETS_TO_BUILD="RISCV" -DLLVM_ENABLE_PROJECTS="clang;lld"  -DLLVM_BINUTILS_INCDIR=/Users/chungshu/usb/git/1/riscv-gnu-toolchain/riscv-binutils/include  -DCMAKE_INSTALL_PREFIX=/opt/homebrew/opt/riscv-gnu-toolchain -DLLVM_PARALLEL_COMPILE_JOBS=4  -DLLVM_PARALLEL_LINK_JOBS=1 -DLLVM_DEFAULT_TARGET_TRIPLE=riscv64-unknown-elf -DDEFAULT_SYSROOT=/opt/homebrew/opt/riscv-gnu-toolchain/riscv64-unknown-elf -DLLVM_INSTALL_UTILS=ON ../llvm
 
+/opt/homebrew/opt/riscv-gnu-toolchain/bin/clang -march=rv64g hello.c -o hello_newlib_rv64g -v
+
+// build libcxx from llvm branch 12.x on Mac
+https://libcxx.llvm.org/BuildingLibcxx.html
+llvm-project % cmake -G Ninja -S runtimes -B build -DLLVM_ENABLE_RUNTIMES="libcxx;libcxxabi;libunwind" -DCMAKE_INSTALL_PREFIX=/opt/homebrew/opt/riscv-gnu-toolchain 
+
+git % /opt/homebrew/opt/riscv-gnu-toolchain/bin/clang++ -march=rv64g hello.c -o hello_newlib_rv64g -nostdlib++ -isystem /opt/homebrew/opt/riscv-gnu-toolchain/include/c++/v1 -L /opt/homebrew/opt/riscv-gnu-toolchain/lib -Wl,-rpath,/opt/homebrew/opt/riscv-gnu-toolchain/lib -lc++ -v
+...
+In file included from hello.c:1:
+In file included from /opt/homebrew/opt/riscv-gnu-toolchain/include/c++/v1/stdio.h:101:
+/opt/homebrew/opt/riscv-gnu-toolchain/include/c++/v1/__config:1183:6: error: "No thread API"
+#    error "No thread API"
+     ^
+
+
 
 
 4. Other: 
