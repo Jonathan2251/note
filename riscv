@@ -68,7 +68,15 @@ ld.lld: error: static-reloc.c:(.text+0x0): relocation R_RISCV_ALIGN requires uni
 ld.lld: error: static-reloc.c:(.text+0x0): relocation R_RISCV_ALIGN requires unimplemented linker relaxation; recompile with -mno-relax
 
 
-3. Other: 
+3. Install on Mac:
+// brew install riscv-gnu-toolchain
+https://github.com/riscv-software-src/homebrew-riscv
+
+build_riscv_newlib % cmake -G "Ninja" -DCMAKE_BUILD_TYPE=Debug -DLLVM_TARGETS_TO_BUILD="RISCV" -DLLVM_ENABLE_PROJECTS="clang;lld"  -DLLVM_BINUTILS_INCDIR=/Users/chungshu/usb/git/1/riscv-gnu-toolchain/riscv-binutils/include  -DCMAKE_INSTALL_PREFIX=/opt/homebrew/opt/riscv-gnu-toolchain -DLLVM_PARALLEL_COMPILE_JOBS=4  -DLLVM_PARALLEL_LINK_JOBS=1 -DLLVM_DEFAULT_TARGET_TRIPLE=riscv64-unknown-elf -DDEFAULT_SYSROOT=/opt/homebrew/opt/riscv-gnu-toolchain/riscv64-unknown-elf -DLLVM_INSTALL_UTILS=ON ../llvm
+
+
+
+4. Other: 
 Build llvm-riscv:
 
 A.
