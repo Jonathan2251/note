@@ -3,6 +3,24 @@
 source var-office-riscv-toolchain-setup.sh
 #source var-home-riscv-toolchain-setup.sh
 
+check() {
+  if [ ! -d "$GNU_SRC_DIR" ]; then
+    echo "GNU_SRC_DIR: $GNU_SRC_DIR not exist"
+  fi
+  if [ ! -d "$GNU_NEWLIB_INSTALL_DIR" ]; then
+    echo "GNU_NEWLIB_INSTALL_DIR: $GNU_NEWLIB_INSTALL_DIR not exist"
+  fi
+  if [ ! -d "$GNU_LINUX_INSTALL_DIR" ]; then
+    echo "GNU_LINUX_INSTALL_DIR: $GNU_LINUX_INSTALL_DIR not exist"
+  fi
+  if [ ! -d "$LLVM_NEWLIB_BUILD_DIR" ]; then
+    echo "LLVM_NEWLIB_BUILD_DIR: $LLVM_NEWLIB_BUILD_DIR not exist"
+  fi
+  if [ ! -d "$LLVM_LINUX_BUILD_DIR" ]; then
+    echo "LLVM_LINUX_BUILD_DIR: $LLVM_LINUX_BUILD_DIR not exist"
+  fi
+}
+
 build_gnu_toolchain() {
   pushd $GNU_SRC_DIR
   git clone https://github.com/riscv/riscv-gnu-toolchain
@@ -34,5 +52,6 @@ build_llvm_toolchain() {
   popd
 }
 
+check;
 build_gnu_toolchain;
 build_llvm_toolchain;
