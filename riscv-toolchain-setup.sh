@@ -6,18 +6,23 @@ source var-office-riscv-toolchain-setup.sh
 check() {
   if [ ! -d "$GNU_SRC_DIR" ]; then
     echo "GNU_SRC_DIR: $GNU_SRC_DIR not exist"
+    exit 1
   fi
-  if [ ! -d "$GNU_NEWLIB_INSTALL_DIR" ]; then
-    echo "GNU_NEWLIB_INSTALL_DIR: $GNU_NEWLIB_INSTALL_DIR not exist"
+  if [ -d "$GNU_NEWLIB_INSTALL_DIR" ]; then
+    echo "GNU_NEWLIB_INSTALL_DIR: $GNU_NEWLIB_INSTALL_DIR exist. Remove it before running."
+    exit 1
   fi
-  if [ ! -d "$GNU_LINUX_INSTALL_DIR" ]; then
-    echo "GNU_LINUX_INSTALL_DIR: $GNU_LINUX_INSTALL_DIR not exist"
+  if [ -d "$GNU_LINUX_INSTALL_DIR" ]; then
+    echo "GNU_LINUX_INSTALL_DIR: $GNU_LINUX_INSTALL_DIR exist. Remove it before running."
+    exit 1
   fi
   if [ ! -d "$LLVM_NEWLIB_BUILD_DIR" ]; then
-    echo "LLVM_NEWLIB_BUILD_DIR: $LLVM_NEWLIB_BUILD_DIR not exist"
+    echo "LLVM_NEWLIB_BUILD_DIR: $LLVM_NEWLIB_BUILD_DIR not exist. Create it before running."
+    exit 1
   fi
   if [ ! -d "$LLVM_LINUX_BUILD_DIR" ]; then
-    echo "LLVM_LINUX_BUILD_DIR: $LLVM_LINUX_BUILD_DIR not exist"
+    echo "LLVM_LINUX_BUILD_DIR: $LLVM_LINUX_BUILD_DIR not exist. Create it before running."
+    exit 1
   fi
 }
 
