@@ -3,6 +3,16 @@
 source var-office-riscv-toolchain-setup.sh
 #source var-home-riscv-toolchain-setup.sh
 
+get_llvm() {
+  pushd $HOME/llvm
+  git clone https://github.com/llvm/llvm-project.git
+  cd llvm-project
+  git checkout -b 13.x origin/release/13.x
+  mkdir build_riscv_newlib
+  mkdir build_riscv_linux
+  popd
+}
+
 check() {
   if [ ! -d "$GNU_SRC_DIR" ]; then
     echo "GNU_SRC_DIR: $GNU_SRC_DIR not exist"
@@ -57,6 +67,7 @@ build_llvm_toolchain() {
   popd
 }
 
+#get_llvm;
 check;
 build_gnu_toolchain;
 build_llvm_toolchain;
