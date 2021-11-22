@@ -1,1 +1,3 @@
-https://libcxx.llvm.org//BuildingLibcxx.html
+https://libcxx.llvm.org/BuildingLibcxx.html
+
+cmake -DCMAKE_BUILD_TYPE=Debug -DLLVM_ENABLE_PROJECTS="clang;lld;libcxx;libcxxabi;libunwind" -DLIBCXXABI_USE_LLVM_UNWINDER=YES -DCLANG_DEFAULT_RTLIB=compiler-rt -DLLVM_PARALLEL_COMPILE_JOBS=4 -DLLVM_PARALLEL_LINK_JOBS=1 -G "Ninja" ../llvm
