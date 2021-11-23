@@ -1,3 +1,18 @@
 https://libcxx.llvm.org/BuildingLibcxx.html
 
-cmake -DCMAKE_BUILD_TYPE=Debug -DLLVM_ENABLE_PROJECTS="clang;lld;libcxx;libcxxabi;libunwind" -DLIBCXXABI_USE_LLVM_UNWINDER=YES -DCLANG_DEFAULT_RTLIB=compiler-rt -DLLVM_PARALLEL_COMPILE_JOBS=4 -DLLVM_PARALLEL_LINK_JOBS=1 -G "Ninja" ../llvm
+build:
+/local/git/llvm-project/build_all_libcxx$ git branch -a
+  12.x
+* 13.x
+
+/local/git/llvm-project/build_all_libcxx$ git log
+commit 9dc7d6d5e3261f2cb1ae746ddaaf2f4d4f1f5350 (HEAD -> 13.x, origin/release/13.x)
+
+cmake -DCMAKE_BUILD_TYPE=Debug -DLLVM_ENABLE_PROJECTS="clang;lld;libcxx;libcxxabi;libunwind;compiler-rt" -DLLVM_PARALLEL_COMPILE_JOBS=4 -DLLVM_PARALLEL_LINK_JOBS=1 -G "Ninja" ../llvm
+
+pass:
+/local/git/ex/c++/3$ /local/git/llvm-project/build_all_libcxx/bin/clang++ main.cpp -s -nostdinc++ -nostdlib++ -isystem /local/git/llvm-project/build_all_libcxx/include/c++/v1 -L /local/git/llvm-project/build_all_libcxx/lib -Wl,-rpath,/local/git/llvm-project/build_all_libcxx/lib -lc++ -v
+/local/git/ex/c++/3$ ./a.out
+id: 1
+
+ref. https://libcxx.llvm.org/UsingLibcxx.html#alternate-libcxx
