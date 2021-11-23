@@ -13,16 +13,49 @@ cmake -DCMAKE_BUILD_TYPE=Debug -DLLVM_ENABLE_PROJECTS="clang;lld;libcxx;libcxxab
 pass:
 
 // /local/git/llvm-project/build_all_libcxx has built with libcxx and compiler-rt as above
+// link with libcxx and libunwind
 /local/git/ex/c++/3$ /local/git/llvm-project/build_all_libcxx/bin/clang++ main.cpp -nostdinc++ -nostdlib++ -isystem /local/git/llvm-project/build_all_libcxx/include/c++/v1 -L /local/git/llvm-project/build_all_libcxx/lib -Wl,-rpath,/local/git/llvm-project/build_all_libcxx/lib -lc++ -v
+...
+ "/usr/bin/ld" ...-lc++ -lm /local/git/llvm-project/build_all_libcxx/lib/clang/13.0.1/lib/linux/libclang_rt.builtins-x86_64.a -lc /local/git/llvm-project/build_all_libcxx/lib/clang/13.0.1/lib/linux/libclang_rt.builtins-x86_64.a /local/git/llvm-project/build_all_libcxx/lib/clang/13.0.1/lib/linux/clang_rt.crtend-x86_64.o /usr/lib/x86_64-linux-gnu/crtn.o
+
+/local/git/ex/c++/3$ ldd a.out
+	linux-vdso.so.1 (0x00007ffd69e6b000)
+	libc++.so.1 => /local/git/llvm-project/build_all_libcxx/lib/libc++.so.1 (0x00007eff9e5c8000)
+	libunwind.so.1 => /local/git/llvm-project/build_all_libcxx/lib/libunwind.so.1 (0x00007eff9e3b7000)
+	libc++abi.so.1 => /local/git/llvm-project/build_all_libcxx/lib/libc++abi.so.1 (0x00007eff9e160000)
+	libm.so.6 => /lib/x86_64-linux-gnu/libm.so.6 (0x00007eff9ddc2000)
+	libc.so.6 => /lib/x86_64-linux-gnu/libc.so.6 (0x00007eff9d9d1000)
+	libpthread.so.0 => /lib/x86_64-linux-gnu/libpthread.so.0 (0x00007eff9d7b2000)
+	libgcc_s.so.1 => /lib/x86_64-linux-gnu/libgcc_s.so.1 (0x00007eff9d59a000)
+	libdl.so.2 => /lib/x86_64-linux-gnu/libdl.so.2 (0x00007eff9d396000)
+	/lib64/ld-linux-x86-64.so.2 (0x00007eff9e978000)
+
 /local/git/ex/c++/3$ ./a.out
 id: 1
-/local/git/ex/c++/3$ /local/git/llvm-project/build_all_libcxx/bin/clang++ main.cpp -stdlib=libc++ -v
-"/usr/bin/ld" ... -lc++ -lm /local/git/llvm-project/build_all_libcxx/lib/clang/13.0.1/lib/linux/libclang_rt.builtins-x86_64.a -lc /local/git/llvm-project/build_all_libcxx/lib/clang/13.0.1/lib/linux/libclang_rt.builtins-x86_64.a /local/git/llvm-project/build_all_libcxx/lib/clang/13.0.1/lib/linux/clang_rt.crtend-x86_64.o /usr/lib/x86_64-linux-gnu/crtn.o
+
+// link with glibc, unwind is part of glibc
+/local/git/ex/c++/3$ /local/git/llvm-project/build_all_libcxx/bin/clang++ main.cpp -v
+...
+ "/usr/bin/ld" ...-lstdc++ -lm /local/git/llvm-project/build_all_libcxx/lib/clang/13.0.1/lib/linux/libclang_rt.builtins-x86_64.a -lc /local/git/llvm-project/build_all_libcxx/lib/clang/13.0.1/lib/linux/libclang_rt.builtins-x86_64.a /local/git/llvm-project/build_all_libcxx/lib/clang/13.0.1/lib/linux/clang_rt.crtend-x86_64.o /usr/lib/x86_64-linux-gnu/crtn.o
+
+local/git/ex/c++/3$ ./a.out
+id: 1
+/local/git/ex/c++/3$ ldd a.out
+	linux-vdso.so.1 (0x00007ffd8dd19000)
+	libstdc++.so.6 => /usr/lib/x86_64-linux-gnu/libstdc++.so.6 (0x00007f3e092c6000)
+	libm.so.6 => /lib/x86_64-linux-gnu/libm.so.6 (0x00007f3e08f28000)
+	libc.so.6 => /lib/x86_64-linux-gnu/libc.so.6 (0x00007f3e08b37000)
+	/lib64/ld-linux-x86-64.so.2 (0x00007f3e0964f000)
+	libgcc_s.so.1 => /lib/x86_64-linux-gnu/libgcc_s.so.1 (0x00007f3e0891f000)
+
 
 // /local/git/llvm-project/build has not build libcxx and compiler-rt
 /local/git/ex/c++/3$ /local/git/llvm-project/build/bin/clang++ main.cpp -v
+...
 "/usr/bin/ld" ... -lstdc++ -lm -lgcc_s -lgcc -lc -lgcc_s -lgcc /usr/lib/gcc/x86_64-linux-gnu/7.5.0/crtend.o /usr/lib/x86_64-linux-gnu/crtn.o
 
+/local/git/ex/c++/3$ ./a.out
+id: 1
 
 ref. https://libcxx.llvm.org/UsingLibcxx.html#alternate-libcxx
 

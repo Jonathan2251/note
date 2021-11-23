@@ -94,9 +94,21 @@ In file included from /opt/homebrew/opt/riscv-gnu-toolchain/include/c++/v1/stdio
      ^
 
 
+4. Build riscv with libcxx
+compiler-rt fail on riscv
+/local/git/llvm-project/compiler-rt/lib/builtins/riscv/save.S:183:3: error: #error "xlen must be 32 or 64 for save-restore implementation
+ # error "xlen must be 32 or 64 for save-restore implementation
+   ^~~~~
+/local/git/llvm-project/build_riscv64_newlib_libcxx$ cmake -G "Ninja" -DCMAKE_BUILD_TYPE=Debug -DLLVM_TARGETS_TO_BUILD="RISCV" -DLLVM_ENABLE_PROJECTS="clang;lld;libcxx;libcxxabi;libunwind"  -DLLVM_BINUTILS_INCDIR=/local/git/1/riscv-gnu-toolchain/riscv-binutils/include  -DCMAKE_INSTALL_PREFIX=/local/riscv_newlib -DLLVM_PARALLEL_COMPILE_JOBS=4  -DLLVM_PARALLEL_LINK_JOBS=1 -DLLVM_DEFAULT_TARGET_TRIPLE=riscv64-unknown-elf -DDEFAULT_SYSROOT=/local/riscv_newlib/riscv64-unknown-elf -DLLVM_INSTALL_UTILS=ON ../llvm
+
+Without compiler-rt, libcxx still not support riscv as follows, 
+/local/git/ex/c++/3$ /local/git/llvm-project/build_riscv64_newlib_libcxx/bin/clang++ main.cpp -nostdinc++ -nostdlib++ -isystem /local/git/llvm-project/build_riscv64_newlib_libcxx/include/c++/v1 -L /local/git/llvm-project/build_riscv64_newlib_libcxx/lib -Wl,-rpath,/local/git/llvm-project/build_riscv64_newlib_libcxx/lib -lc++ -v
+...
+/local/git/llvm-project/build_riscv64_newlib_libcxx/include/c++/v1/__threading_support:132:3: error: Unsupported architecture
+# error Unsupported architecture
 
 
-4. Other: 
+5. Other: 
 Build llvm-riscv:
 
 A.
@@ -140,7 +152,7 @@ cmake -G Ninja -DCMAKE_BUILD_TYPE=Debug -DLLVM_TARGETS_TO_BUILD="RISCV" -DLLVM_E
  
  
 
-3. Test:
+6. Test:
 
 /local/git$ /local/git/llvm-project/build_riscv64_nocompilerrt/bin/clang -stdlib=libc++ -Wl,-rpath,/local/git/llvm-project/build_riscv64_nocompilerrt/lib hello.c -o a.out
 clang-12: warning: argument unused during compilation: '-stdlib=libc++' [-Wunused-command-line-argument]
