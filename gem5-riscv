@@ -1,0 +1,9 @@
+http://learning.gem5.org/book/part1/building.html#requirements-for-gem5
+http://learning.gem5.org/book/part1/example_configs.html
+
+build scons 
+local/git/gem5$ scons ./build/RISCV/gem5.debug -j20
+
+run with hello.c
+/local/git$ /local/git/gem5/build/RISCV/gem5.debug /local/git/gem5/configs/example/se.py --cmd=./hello_newlib
+
