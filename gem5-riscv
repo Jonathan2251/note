@@ -6,4 +6,7 @@ local/git/gem5$ scons ./build/RISCV/gem5.debug -j20
 
 run with hello.c
 /local/git$ /local/git/gem5/build/RISCV/gem5.debug /local/git/gem5/configs/example/se.py --cmd=./hello_newlib
+**** REAL SIMULATION ****
+build/RISCV/sim/simulate.cc:107: info: Entering event queue @ 0.  Starting simulation...
+HelloWorld! 
 
