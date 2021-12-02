@@ -1,0 +1,10 @@
+set virtualbox for Andes' tvm
+
+Error in (line 142) -- Invalid value 'VBOXSVGA' in Display/@controller attribute.
+solution:
+1. upgrade from 5.x to 6.1
+    https://forums.virtualbox.org/viewtopic.php?t=91472
+   "ubuntu 18.04 upgrade virtualbox 5.2 to 6" -> https://tecadmin.net/install-virtualbox-on-ubuntu-18-04/
+2. RTR3InitEx failed with rc=-1912 (rc=-1912)
+  delete old virtualbox https://askubuntu.com/questions/900794/virtualbox-rtr3initex-failed-with-rc-1912-rc-1912
+ 
