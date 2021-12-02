@@ -13,3 +13,8 @@ run with hello.c
 build/RISCV/sim/simulate.cc:107: info: Entering event queue @ 0.  Starting simulation...
 HelloWorld! 
 
+check cycles:
+/local/git$ vi m5out/stats.txt
+simSeconds                                   0.000001                       # Number of seconds simulated (Second)
+simTicks                                      1229000                       # Number of ticks simulated (Tick)
+...
