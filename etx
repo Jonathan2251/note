@@ -7,4 +7,9 @@ solution:
    "ubuntu 18.04 upgrade virtualbox 5.2 to 6" -> https://tecadmin.net/install-virtualbox-on-ubuntu-18-04/
 2. RTR3InitEx failed with rc=-1912 (rc=-1912)
   delete old virtualbox https://askubuntu.com/questions/900794/virtualbox-rtr3initex-failed-with-rc-1912-rc-1912
- 
+
+// use the following ssh to avoid turning into black within a while of idle.
+ssh -p 9022 user@127.0.0.1 
+// For ssh, setup tvm VM as follows
+sudo apt install ssh
+U2104 - Settings - Network - Port Forwarding Rules - Protocal:TCP, Host Port:9022, Guest Port:22
