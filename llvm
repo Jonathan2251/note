@@ -3,7 +3,7 @@ https://stackoverflow.com/questions/40799696/how-is-gcc-ir-different-from-llvm-i
 
 http://blog.llvm.org/2011/05/what-every-c-programmer-should-know.html
 
-User uses null pointer to guard code in debug mode is right. For undef is only happened in compiler optimization. The manager of compiler department was wrong, I was right 9 years ago.
+User uses null pointer to guard code in debug mode is right. For undef is only happened in compiler optimization. The manager of compiler department was wrong, I was right 9 years ago. Null pointer even can guard code both in O0 and O3 (ref. null_pointer.cpp)
 
 undef
 http://blog.llvm.org/2011/05/what-every-c-programmer-should-know.html
