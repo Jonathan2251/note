@@ -1,0 +1,10 @@
+
+
+/local/git/1$ git clone https://github.com/riscv-software-src/riscv-pk
+/local/git/1$ cd riscv-pk
+/local/git/1/riscv-pk$ git checkout a3e4ac61d2b1ff37a22b9193b85d3b94273e80cb
+/local/git/1/riscv-pk/build$ export CC=/local/riscv_newlib/bin/clang
+/local/git/1/riscv-pk/build$ echo $CC
+
+
+https://cnrv.io/articles/spike-linux
