@@ -4,6 +4,11 @@ get source code:
 https://www.qemu.org/download/
 git clone https://gitlab.com/qemu-project/qemu.git
 
+jonathanchen@hz-compiler1:/local/git$ /local/riscv_newlib/bin/clang hello.c -o hello_newlib
+jonathanchen@hz-compiler1:/local/git$ /local/git/qemu/build/qemu-riscv64 hello_newlib
+HelloWorld! 
+
+
 jonathanchen@hz-compiler1:/local/git$ /local/riscv_newlib/bin/riscv64-unknown-elf-gcc -c hello_world.s 
 jonathanchen@hz-compiler1:/local/git$ /local/riscv_newlib/bin/riscv64-unknown-elf-ld hello_world.o -o hello_world
 jonathanchen@hz-compiler1:/local/git$ /local/git/qemu/build/qemu-riscv64 hello_world
