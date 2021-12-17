@@ -1,0 +1,9 @@
+ 280   const_reference operator[](size_type idx) const {
+ 281     if (!(idx < size())) {
+ 282       static int ii = 0;
+ 283       ii++;
+ 284     }
+ 285     assert(idx < size());
+ 286     return begin()[idx];
+ 287   }
+llvm-project/llvm/include/llvm/ADT/SmallVector.h
