@@ -33,3 +33,5 @@ http://swtv.kaist.ac.kr/courses/cs453-fall13/Clang%20tutorial%20v4.pdf
 // clang build cross compiler
 https://clang.llvm.org/docs/CrossCompilation.html
 
+// Auto Vectorizer
+https://llvm.org/docs/Vectorizers.html
