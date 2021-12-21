@@ -1,6 +1,5 @@
-ref. https://libcxx.llvm.org/UsingLibcxx.html#alternate-libcxx
-
-/local/git/llvm-project/build_all_libcxx/bin/clang++ main.cpp -nostdinc++ -nostdlib++ -isystem /local/git/llvm-project/build_all_libcxx/include/c++/v1 -L /local/git/llvm-project/build_all_libcxx/lib -Wl,-rpath,/local/git/llvm-project/build_all_libcxx/lib -lc++ -vhttps://libcxx.llvm.org/BuildingLibcxx.html
+ref. build: https://libcxx.llvm.org/BuildingLibcxx.html
+ref. run:  https://libcxx.llvm.org/UsingLibcxx.html#alternate-libcxx
 
 build:
 /local/git/llvm-project/build_all_libcxx$ git branch -a
@@ -10,7 +9,10 @@ build:
 /local/git/llvm-project/build_all_libcxx$ git log
 commit 9dc7d6d5e3261f2cb1ae746ddaaf2f4d4f1f5350 (HEAD -> 13.x, origin/release/13.x)
 
-cmake -DCMAKE_BUILD_TYPE=Debug -DLLVM_ENABLE_PROJECTS="clang;lld;libcxx;libcxxabi;libunwind;compiler-rt" -DLLVM_PARALLEL_COMPILE_JOBS=4 -DLLVM_PARALLEL_LINK_JOBS=1 -G "Ninja" ../llvm
+cmake -DCMAKE_BUILD_TYPE=Debug -DLLVM_ENABLE_PROJECTS="clang;lld;libcxx;libcxxabi;libunwind;compiler-rt" -DLLVM_PARALLEL_COMPILE_JOBS=5 -DLLVM_PARALLEL_LINK_JOBS=1 -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_C_COMPILER=clang -G "Ninja" ../llvm
+
+
+run:
 
 pass:
 
@@ -68,7 +70,8 @@ fail:
          ^~~~~~~~~~~~~~~~~~~~~~~~~~
 
 // run with compiler-rt
+// compiler-rt is okay for x86, ref. note/compiler-rt. However libcxx+compiler-rt is not okay.
 jonathanchen@hz-compiler1:/local/git/ex/c++/3$ /local/git/llvm-project/build_all_libcxx/bin/clang++ main.cpp -rtlib=compiler-rt ... -v
 ...
  "/usr/bin/ld" ... /local/git/llvm-project/build_all_libcxx/lib/clang/13.0.1/lib/linux/clang_rt.crtbegin-x86_64.o ... /local/git/llvm-project/build_all_libcxx/lib/clang/13.0.1/lib/linux/libclang_rt.builtins-x86_64.a
-
+/usr/bin/ld: /tmp/main-99d507.o: undefined reference to symbol '_Unwind_Resume@@GCC_3.0'
