@@ -1,3 +1,5 @@
+ref. https://libcxx.llvm.org/UsingLibcxx.html#alternate-libcxx
+
 /local/git/llvm-project/build_all_libcxx/bin/clang++ main.cpp -nostdinc++ -nostdlib++ -isystem /local/git/llvm-project/build_all_libcxx/include/c++/v1 -L /local/git/llvm-project/build_all_libcxx/lib -Wl,-rpath,/local/git/llvm-project/build_all_libcxx/lib -lc++ -vhttps://libcxx.llvm.org/BuildingLibcxx.html
 
 build:
@@ -56,8 +58,6 @@ id: 1
 
 /local/git/ex/c++/3$ ./a.out
 id: 1
-
-ref. https://libcxx.llvm.org/UsingLibcxx.html#alternate-libcxx
 
 fail:
 /local/git/ex/c++/3$ /local/git/llvm-project/build_all_libcxx/bin/clang++ main.cpp -nostdinc++ -nostdlib++ -isystem /local/git/llvm-project/build_all_libcxx/include/c++/v1 -L /local/git/llvm-project/build_all_libcxx/lib -Wl,-rpath,/local/git/llvm-project/build_all_libcxx/lib -lc++ -target x86_64-unknown-unknown-elf -v
