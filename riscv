@@ -27,12 +27,17 @@ Build with branch rvv-intrinsic will get rvv support as follows,
    ...
    12512: 57 10 08 02   vfadd.vv        v0, v0, v16
 
-2. Pass for running hello.c
+2. Pass for running llvm/test/CodeGen/RISCV/rvv regression test and hello.c
 
 build: reference riscv-toolchain-setup.sh
 
 ~/llvm/llvm-project$ git log
 commit 845561ec9d009445c99b51b61810b57bb03e1303 (HEAD -> main, origin/main, origin/HEAD)
+
+jonathanchen@hz-compiler1:/local/git/llvm-project/llvm/test/CodeGen/RISCV/rvv$ /local/git/llvm-project/build_riscv64_newlib/bin/llvm-lit .
+...
+  Passed: 694
+
 
 A. bare-metal (newlib):
 
