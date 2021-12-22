@@ -20,3 +20,33 @@ index 27889411..e06f55e8 100644
 cmake -DCMAKE_C_COMPILER=clang -C../test-suite/cmake/caches/O3.cmake -DCMAKE_C_FLAGS=-fPIE -DCMAKE_C_FLAGS=-fPIE ../test-suite
 make
 
+jonathanchen@hz-compiler1:~/llvm/llvm-project/test-suite-build$ ../test-suite/utils/compare.py results.json
+Tests: 2883
+Metric: exec_time
+
+Program                                         results 
+ LCALS/Subs...test:BM_MAT_X_MAT_LAMBDA/44217   243962.70
+ LCALS/Subs...aw.test:BM_MAT_X_MAT_RAW/44217   239099.82
+ ImageProce...t:BENCHMARK_GAUSSIAN_BLUR/1024   91095.66 
+ ImageProce...HMARK_ANISTROPIC_DIFFUSION/256   48247.41 
+ harris/har...est:BENCHMARK_HARRIS/2048/2048   42711.39 
+ ImageProce...MARK_BICUBIC_INTERPOLATION/256   25228.46 
+ ImageProce...st:BENCHMARK_GAUSSIAN_BLUR/512   21491.95 
+ LCALS/Subs...Raw.test:BM_MAT_X_MAT_RAW/5001   12298.11 
+ harris/har...est:BENCHMARK_HARRIS/1024/1024   12258.56 
+ LCALS/Subs....test:BM_MAT_X_MAT_LAMBDA/5001   12026.61 
+ ImageProce...HMARK_ANISTROPIC_DIFFUSION/128   11664.37 
+ ImageProce...MARK_BICUBIC_INTERPOLATION/128   6158.37  
+ ImageProce...st:BENCHMARK_GAUSSIAN_BLUR/256   5207.85  
+ ImageProce...ARK_BILINEAR_INTERPOLATION/256   4726.38  
+ ImageProce...ate.test:BENCHMARK_DILATE/1024   4536.68  
+             results
+count  2867.000000  
+mean   359.924761   
+std    6760.605803  
+min    0.000000     
+25%    0.000400     
+50%    0.000400     
+75%    0.005000     
+max    243962.699333
+
