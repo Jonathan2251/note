@@ -35,3 +35,8 @@ https://clang.llvm.org/docs/CrossCompilation.html
 
 // Auto Vectorizer
 https://llvm.org/docs/Vectorizers.html
+// build test-suite
+ref. note/llvm-test-suite
+
+// turn off slp vectorize
+https://github.com/Jonathan2251/ex/clang/vectorize/Godbolt.cpp
