@@ -17,7 +17,10 @@ index 27889411..e06f55e8 100644
 -add_subdirectory(XRay)
 +#add_subdirectory(XRay)
 
-cmake -DCMAKE_C_COMPILER=clang -C../test-suite/cmake/caches/O3.cmake -DCMAKE_C_FLAGS=-fPIE -DCMAKE_C_FLAGS=-fPIE ../test-suite
+cmake -DCMAKE_C_COMPILER=clang -C../test-suite/cmake/caches/O3.cmake -DCMAKE_C_FLAGS=-fPIE -DCMAKE_CXX_FLAGS=-fPIE ../test-suite
+
+// The following pass build
+jonathanchen@hz-compiler1:~/llvm/llvm-project/test-suite-build$ cmake -DCMAKE_C_COMPILER=/home/jonathanchen/llvm/release/build/bin/clang  -C../test-suite/cmake/caches/O3.cmake ../test-suite
 make
 
 jonathanchen@hz-compiler1:~/llvm/llvm-project/test-suite-build$ ../test-suite/utils/compare.py results.json
