@@ -1,0 +1,4 @@
+git clone git://sourceware.org/git/newlib-cygwin.git
+
+// porting
+https://www.embecosm.com/appnotes/ean9/ean9-howto-newlib-1.0.pdf
