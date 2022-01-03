@@ -2,3 +2,32 @@ jonathanchen@hz-compiler1:/local/git/ex/c++/3$ /local/git/llvm-project/build_all
 ...
  "/usr/bin/ld" ... -lm /local/git/llvm-project/build_all_libcxx/lib/clang/13.0.1/lib/linux/libclang_rt.builtins-x86_64.a -lc /local/git/llvm-project/build_all_libcxx/lib/clang/13.0.1/lib/linux/libclang_rt.builtins-x86_64.a ...
 
+
+compiler-rt/cmake/builtin-config-ix.cmake
+ set(MIPS64 mips64 mips64el)
++set(CPU0 cpu0)
+
+
+compiler-rt/lib/builtins/CMakeLists.txt
+@@ -511,6 +511,10 @@ set(aarch64_SOURCES
+   aarch64/fp_mode.c
+ )
+ 
++set(cpu0_SOURCES
++  ${GENERIC_SOURCES}
++)
++
+
+   darwin_add_builtin_libraries(${BUILTIN_SUPPORTED_OS})
++  
++  set(type "STATIC")
++  if(type STREQUAL "STATIC")
++    set(libname "clang_rt.builtins-${CPU0}")
++  else()
++    message(FATAL_ERROR "${CPU0} supports static link only")
++  endif()
++  set(sources_${libname} ${LIB_SOURCES})
++  get_compiler_rt_output_dir(${CPU0} output_dir_${libname})
++  get_compiler_rt_install_dir(${CPU0} install_dir_${libname})
++  add_library(${libname} ${type} ${sources_${libname}})
++  set(extra_cflags_${libname} ${NO_LTO_FLAGS} ${NO_PGO_FLAGS} ${LIB_CFLAGS})
