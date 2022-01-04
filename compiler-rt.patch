@@ -1,0 +1,81 @@
+diff --git a/compiler-rt/cmake/builtin-config-ix.cmake b/compiler-rt/cmake/builtin-config-ix.cmake
+index ad3b98799c5c..ccb7d5e74c26 100644
+--- a/compiler-rt/cmake/builtin-config-ix.cmake
++++ b/compiler-rt/cmake/builtin-config-ix.cmake
+@@ -43,6 +43,7 @@ set(X86 i386)
+ set(X86_64 x86_64)
+ set(MIPS32 mips mipsel)
+ set(MIPS64 mips64 mips64el)
++set(CPU0 cpu0)
+ set(PPC32 powerpc)
+ set(PPC64 powerpc64 powerpc64le)
+ set(RISCV32 riscv32)
+@@ -63,7 +64,7 @@ set(ALL_BUILTIN_SUPPORTED_ARCH
+   ${X86} ${X86_64} ${ARM32} ${ARM64}
+   ${HEXAGON} ${MIPS32} ${MIPS64} ${PPC32} ${PPC64}
+   ${RISCV32} ${RISCV64} ${SPARC} ${SPARCV9}
+-  ${WASM32} ${WASM64} ${VE})
++  ${WASM32} ${WASM64} ${VE} ${CPU0})
+ 
+ include(CompilerRTUtils)
+ include(CompilerRTDarwinUtils)
+@@ -205,6 +206,9 @@ else()
+   # Architectures supported by compiler-rt libraries.
+   filter_available_targets(BUILTIN_SUPPORTED_ARCH
+     ${ALL_BUILTIN_SUPPORTED_ARCH})
++  list(APPEND BUILTIN_SUPPORTED_ARCH ${CPU0})
++  set(CAN_TARGET_${CPU0} 1)
++  message(STATUS "BUILTIN_SUPPORTED_ARCH: ${BUILTIN_SUPPORTED_ARCH}")
+ endif()
+ 
+ message(STATUS "Builtin supported architectures: ${BUILTIN_SUPPORTED_ARCH}")
+diff --git a/compiler-rt/lib/builtins/CMakeLists.txt b/compiler-rt/lib/builtins/CMakeLists.txt
+index 73b6bead8424..b12ed57e9291 100644
+--- a/compiler-rt/lib/builtins/CMakeLists.txt
++++ b/compiler-rt/lib/builtins/CMakeLists.txt
+@@ -511,6 +511,10 @@ set(aarch64_SOURCES
+   aarch64/fp_mode.c
+ )
+ 
++set(cpu0_SOURCES
++  ${GENERIC_SOURCES}
++)
++
+ # Generate outline atomics helpers from lse.S base
+ set(OA_HELPERS_DIR "${CMAKE_CURRENT_BINARY_DIR}/outline_atomic_helpers.dir")
+ file(MAKE_DIRECTORY "${OA_HELPERS_DIR}")
+@@ -661,6 +665,19 @@ if (APPLE)
+   add_subdirectory(Darwin-excludes)
+   add_subdirectory(macho_embedded)
+   darwin_add_builtin_libraries(${BUILTIN_SUPPORTED_OS})
++
++  set(type "STATIC")
++  if(type STREQUAL "STATIC")
++    set(libname "clang_rt.builtins-${CPU0}")
++  else()
++    message(FATAL_ERROR "${CPU0} supports static link only")
++  endif()
++  set(sources_${libname} ${LIB_SOURCES})
++  get_compiler_rt_output_dir(${CPU0} output_dir_${libname})
++  get_compiler_rt_install_dir(${CPU0} install_dir_${libname})
++  add_library(${libname} ${type} ${sources_${libname}})
++  set(extra_cflags_${libname} ${NO_LTO_FLAGS} ${NO_PGO_FLAGS} ${LIB_CFLAGS})
++
+ else ()
+   set(BUILTIN_CFLAGS "")
+ 
+diff --git a/compiler-rt/test/builtins/CMakeLists.txt b/compiler-rt/test/builtins/CMakeLists.txt
+index 31d16312dd18..a61a483de4df 100644
+--- a/compiler-rt/test/builtins/CMakeLists.txt
++++ b/compiler-rt/test/builtins/CMakeLists.txt
+@@ -31,6 +31,10 @@ if(APPLE)
+ endif()
+ 
+ foreach(arch ${BUILTIN_TEST_ARCH})
++  if (${arch} STREQUAL "cpu0")
++    message(STATUS "skip cpu0 test")
++    continue()
++  endif()
+   set(BUILTINS_TEST_TARGET_ARCH ${arch})
+   string(TOLOWER "-${arch}-${OS_NAME}" BUILTINS_TEST_CONFIG_SUFFIX)
+   get_test_cc_for_arch(${arch} BUILTINS_TEST_TARGET_CC BUILTINS_TEST_TARGET_CFLAGS)
