@@ -1,0 +1,6 @@
+terminal:
+  control+A: begin of line
+  control+E: end of line
+vi:
+  fn+<: begin of line
+  fn+>: end of line

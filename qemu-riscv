@@ -4,6 +4,8 @@ get source code:
 https://www.qemu.org/download/
 git clone https://gitlab.com/qemu-project/qemu.git
 
+// baremetal
+
 jonathanchen@hz-compiler1:/local/git$ /local/riscv_newlib/bin/clang hello.c -o hello_newlib
 jonathanchen@hz-compiler1:/local/git$ /local/git/qemu/build/qemu-riscv64 hello_newlib
 HelloWorld! 
@@ -16,3 +18,12 @@ Hello World
 
 C and asm for hello world:
 ref. caller_hello.c
+
+// linux
+// Use static link in linux
+// Linux compilers are hard. riscv-gnu-toolchain is fine for building linux binaries to run on a simulator, but should not be used to build a cross compiler for a linux target. This is unlikely to work. It might work if you static link the binaries.
+// ref. https://github.com/riscv-collab/riscv-gnu-toolchain/issues/644
+jonathanchen@hz-compiler1:/local/git$ /local/riscv_linux/bin/clang -march=rv64g hello.c -o hello_linux -static
+
+jonathanchen@hz-compiler1:/local/git$ qemu/build/qemu-riscv64 hello_linux 
+HelloWorld! 

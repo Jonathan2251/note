@@ -54,6 +54,10 @@ build_gnu_toolchain() {
   popd
 }
 
+# DEFAULT_SYSROOT: https://stackoverflow.com/questions/66357013/compile-clang-with-alternative-sysroot
+# LLVM_DEFAULT_TARGET_TRIPLE:  https://clang.llvm.org/docs/CrossCompilation.html#general-cross-compilation-options-in-clang
+# Use "clang --sysroot" if did not "cmake -DDEFAULT_SYSROOT"
+# $GNU_NEWLIB_INSTALL_DIR/clang --gcc-toolchain=$GNU_NEWLIB_INSTALL_DIR --sysroot=$GNU_NEWLIB_INSTALL_DIR/sysroot/ --static test.c
 build_llvm_toolchain() {
   pushd $LLVM_NEWLIB_BUILD_DIR
   cmake -G "Ninja" -DCMAKE_BUILD_TYPE=Debug -DLLVM_TARGETS_TO_BUILD="RISCV" -DLLVM_ENABLE_PROJECTS="clang;lld"  -DLLVM_BINUTILS_INCDIR=$GNU_SRC_DIR/riscv-gnu-toolchain/riscv-binutils/include  -DCMAKE_INSTALL_PREFIX=$GNU_NEWLIB_INSTALL_DIR -DLLVM_PARALLEL_COMPILE_JOBS=4  -DLLVM_PARALLEL_LINK_JOBS=1 -DLLVM_DEFAULT_TARGET_TRIPLE=riscv64-unknown-elf -DDEFAULT_SYSROOT=$GNU_NEWLIB_INSTALL_DIR/riscv64-unknown-elf -DLLVM_INSTALL_UTILS=ON ../llvm

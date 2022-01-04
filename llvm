@@ -1,13 +1,4 @@
 llvm ir vs gcc ir
 https://stackoverflow.com/questions/40799696/how-is-gcc-ir-different-from-llvm-ir/40802063
 
-http://blog.llvm.org/2011/05/what-every-c-programmer-should-know.html
-
-User uses null pointer to guard code in debug mode is right. For undef is only happened in compiler optimization. The manager of compiler department was wrong, I was right 9 years ago. Null pointer even can guard code both in O0 and O3 (ref. null_pointer.cpp)
-
-undef
-http://blog.llvm.org/2011/05/what-every-c-programmer-should-know.html
-Dereferencing a NULL Pointer: contrary to popular belief, dereferencing a null pointer in C is undefined. It is not defined to trap, and if you mmap a page at 0, it is not defined to access that page. This falls out of the rules that forbid dereferencing wild pointers and the use of NULL as a sentinel.
-So, use of NULL as a sentinel only applied in O0.
-https://blog.llvm.org/2011/05/what-every-c-programmer-should-know_14.html
-In this case, the developer forgot to call "set", did not crash with a null pointer dereference, and their code broke when someone else did a debug build.
+http://jonathan2251.github.io/lbd/llvmstructure.html#more-about-llvm

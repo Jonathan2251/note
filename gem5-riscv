@@ -18,3 +18,10 @@ check cycles:
 simSeconds                                   0.000001                       # Number of seconds simulated (Second)
 simTicks                                      1229000                       # Number of ticks simulated (Tick)
 ...
+
+jonathanchen@hz-compiler1:/local/git$ /local/git/gem5/build/RISCV/gem5.debug /local/git/gem5/configs/example/se.py --cmd=./hello_linux
+...
+build/RISCV/base/loader/image_file_data.cc:111: panic: panic condition fd < 0 occurred: Failed to open file /lib/ld-linux-riscv64-lp64d.so.1.
+...
+// set according https://stackoverflow.com/questions/64547306/cannot-open-lib-ld-linux-aarch64-so-1-in-qemu-or-gem5
+// but not work
