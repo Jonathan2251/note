@@ -2,22 +2,16 @@ ref.
 https://llvm.org/docs/TestSuiteGuide.html
 https://github.com/mollybuild/RISCV-Measurement/blob/master/Build-RISCV-LLVM-and-run-testsuite.md
 
+Prerequisites:
 sudo apt-get install tcl tk tcl-dev tk-dev
+install llvm with compiler-rt
 
 jonathanchen@hz-compiler1:~/llvm/llvm-project/test-suite$ git branch
 * 12.x
   main
-jonathanchen@hz-compiler1:~/llvm/llvm-project/test-suite$ git diff
-diff --git a/MicroBenchmarks/CMakeLists.txt b/MicroBenchmarks/CMakeLists.txt
-index 27889411..e06f55e8 100644
---- a/MicroBenchmarks/CMakeLists.txt
-+++ b/MicroBenchmarks/CMakeLists.txt
-@@ -2,7 +2,7 @@ file(COPY lit.local.cfg DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
-...
--add_subdirectory(XRay)
-+#add_subdirectory(XRay)
 
-cmake -DCMAKE_C_COMPILER=clang -C../test-suite/cmake/caches/O3.cmake -DCMAKE_C_FLAGS=-fPIE -DCMAKE_CXX_FLAGS=-fPIE ../test-suite
+run bash script:
+https://github.com/Jonathan2251/lbd/blob/master/lbdex/build-llvm-test-suite.sh
 
 // The following pass build
 jonathanchen@hz-compiler1:~/llvm/llvm-project/test-suite-build$ cmake -DCMAKE_C_COMPILER=/home/jonathanchen/llvm/release/build/bin/clang  -C../test-suite/cmake/caches/O3.cmake ../test-suite

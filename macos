@@ -1,6 +1,15 @@
-terminal:
-  control+A: begin of line
-  control+E: end of line
-vi:
-  fn+<: begin of line
-  fn+>: end of line
+usage:
+
+  terminal:
+    control+A: begin of line
+    control+E: end of line
+  vi:
+    fn+<: begin of line
+    fn+>: end of line
+
+
+install:
+  install pip
+    https://phoenixnap.com/kb/install-pip-mac
+    curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
+    python3 get-pip.py
