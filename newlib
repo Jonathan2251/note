@@ -4,3 +4,7 @@ git clone git://sourceware.org/git/newlib-cygwin.git
 FAQ: What is needed to port newlib to a new platform? in https://sourceware.org/newlib/
 
 https://www.embecosm.com/appnotes/ean9/ean9-howto-newlib-1.0.pdf
+
+// build:
+/local/git/newlib-cygwin/build$ ../newlib/configure  or CC=gcc ../newlib/configure "make pass" while CC=clang "make fail"
+/local/git/newlib-cygwin/build$ make
