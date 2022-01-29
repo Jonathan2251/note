@@ -1,3 +1,12 @@
+// pass build on linux but generate x86_64, not cpu0
+git apply compiler-rt.patch
+~/llvm/llvm-project/build-compiler-rt$ cmake ../compiler-rt -DLLVM_CONFIG_PATH=/home/jonathanchen/llvm/test/build/bin/llvm-config -DCOMPILER_RT_USE_LIBCXX=OFF
+~/llvm/llvm-project/build-compiler-rt$ make -j4
+~/llvm/llvm-project/build-compiler-rt$ ls lib/linux/
+ibclang_rt.builtins-cpu0.a         libclang_rt.hwasan_cxx-x86_64.a.syms      libclang_rt.scudo_cxx-x86_64.a             libclang_rt.ubsan_standalone-x86_64.a.syms
+libclang_rt.builtins-x86_64.a 
+
+
 jonathanchen@hz-compiler1:/local/git/ex/c++/3$ /local/git/llvm-project/build_all_libcxx/bin/clang++ main.cpp --rtlib=compiler-rt -v
 ...
  "/usr/bin/ld" ... -lm /local/git/llvm-project/build_all_libcxx/lib/clang/13.0.1/lib/linux/libclang_rt.builtins-x86_64.a -lc /local/git/llvm-project/build_all_libcxx/lib/clang/13.0.1/lib/linux/libclang_rt.builtins-x86_64.a ...
