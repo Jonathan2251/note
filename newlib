@@ -12,6 +12,11 @@ cschen@cschendeiMac build % CC=/usr/local/bin/gcc-11 ../newlib/configure  // my 
 /local/git/newlib-cygwin/build$ make
 //   ref. search "build newlib with clang" https://ecos.sourceware.org/ml/newlib/current/018127.html
 
+// build with clang on my iMac pc:
+sed -i -e 's/\*__block/\*__libc_block/g' /Users/cschen/git/newlib-cygwin/newlib/libc/include/sys/unistd.h  ref. https://bugzilla.redhat.com/show_bug.cgi?id=1009623
+cschen@cschendeiMac build % CC=clang CFLAGS="-Wno-error=implicit-function-declaration" ../newlib/configure
+cschen@cschendeiMac build % make // pass
+
 // build with Cpu0/clang
 /local/git/newlib-cygwin/build$ CC=/home/jonathanchen/llvm/test/build/bin/clang ../newlib/configure &> log
 /local/git/newlib-cygwin/build$ make
