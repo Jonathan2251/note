@@ -11,3 +11,9 @@ https://www.embecosm.com/appnotes/ean9/ean9-howto-newlib-1.0.pdf
 cschen@cschendeiMac build % CC=/usr/local/bin/gcc-11 ../newlib/configure  // my mac pc
 /local/git/newlib-cygwin/build$ make
 //   ref. search "build newlib with clang" https://ecos.sourceware.org/ml/newlib/current/018127.html
+
+// build with Cpu0/clang
+/local/git/newlib-cygwin/build$ CC=/home/jonathanchen/llvm/test/build/bin/clang ../newlib/configure &> log
+/local/git/newlib-cygwin/build$ make
+/local/git/newlib-cygwin/newlib/libc/include/machine/ieeefp.h:504:2: error: Endianess not declared!!
+#error Endianess not declared!!
