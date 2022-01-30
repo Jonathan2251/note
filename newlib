@@ -6,6 +6,8 @@ FAQ: What is needed to port newlib to a new platform? in https://sourceware.org/
 https://www.embecosm.com/appnotes/ean9/ean9-howto-newlib-1.0.pdf
 
 // build:
-/local/git/newlib-cygwin/build$ ../newlib/configure  or CC=gcc ../newlib/configure "make pass" while CC=clang "make fail"
+~/git/newlib-cygwin/build$ ../newlib/configure  or CC=gcc ../newlib/configure "make pass"
+~/git/newlib-cygwin/build$ CC_FOR_TARGET=/home/cschen/llvm/release/build/bin/clang ../newlib/configure "make pass"
 cschen@cschendeiMac build % CC=/usr/local/bin/gcc-11 ../newlib/configure  // my mac pc
 /local/git/newlib-cygwin/build$ make
+//   ref. search "build newlib with clang" https://ecos.sourceware.org/ml/newlib/current/018127.html
