@@ -7,4 +7,5 @@ https://www.embecosm.com/appnotes/ean9/ean9-howto-newlib-1.0.pdf
 
 // build:
 /local/git/newlib-cygwin/build$ ../newlib/configure  or CC=gcc ../newlib/configure "make pass" while CC=clang "make fail"
+cschen@cschendeiMac build % CC=/usr/local/bin/gcc-11 ../newlib/configure  // my mac pc
 /local/git/newlib-cygwin/build$ make
