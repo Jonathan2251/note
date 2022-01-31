@@ -27,8 +27,10 @@ cschen@cschendeiMac build % CC=/Users/cschen/llvm/release/build/bin/clang CFLAGS
          ^~~~~~~~~
 
 
-// build with Cpu0/clang
-/local/git/newlib-cygwin/build$ CC=/home/jonathanchen/llvm/test/build/bin/clang ../newlib/configure &> log
-/local/git/newlib-cygwin/build$ make
-/local/git/newlib-cygwin/newlib/libc/include/machine/ieeefp.h:504:2: error: Endianess not declared!!
-#error Endianess not declared!!
+// build with Cpu0/clang: pass on my mac pc
+cschen@cschendeiMac newlib-cygwin % git log
+commit dcb25665be227fb5a05497b7178a3d5df88050ec (HEAD -> master, origin/master, origin/HEAD)
+https://github.com/Jonathan2251/note/newlib.patch
+https://github.com/Jonathan2251/note/newlib-cygwin
+CC=/Users/cschen/llvm/test/build/bin/clang CFLAGS="-static -fintegrated-as -Wno-error=implicit-function-declaration" AS="/Users/cschen/llvm/test/build/bin/clang -static -fintegrated-as -c" AR="/Users/cschen/llvm/test/build/bin/llvm-ar" RANLIB="/Users/cschen/llvm/test/build/bin/llvm-ranlib" READELF="/Users/cschen/llvm/test/build/bin/llvm-readelf" ../newlib/configure --host=cpu0
+make

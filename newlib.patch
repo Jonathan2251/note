@@ -85,3 +85,24 @@ index 3cc313080..605929173 100644
  #endif
  #if __BSD_VISIBLE || (__XSI_VISIBLE && __XSI_VISIBLE < 500)
  void	endusershell (void);
+diff --git a/newlib/libc/machine/configure b/newlib/libc/machine/configure
+index 62064cdfd..5ef5eec08 100755
+--- a/newlib/libc/machine/configure
++++ b/newlib/libc/machine/configure
+@@ -823,6 +823,7 @@ csky
+ d10v
+ d30v
+ epiphany
++cpu0
+ fr30
+ frv
+ ft32
+@@ -12007,6 +12008,8 @@ subdirs="$subdirs a29k"
+ 	d30v) subdirs="$subdirs d30v"
+  ;;
+ 	epiphany) subdirs="$subdirs epiphany"
++ ;;
++	cpu0) subdirs="$subdirs cpu0"
+  ;;
+ 	fr30) subdirs="$subdirs fr30"
+  ;;
