@@ -20,6 +20,7 @@ cschen@cschendeiMac build % CC=clang CFLAGS="-Wno-error=implicit-function-declar
 ...
 checking for as... clang -target x86_64-apple-darwin21.2.0 -fintegrated-as -c 
 cschen@cschendeiMac build % CC=/Users/cschen/llvm/release/build/bin/clang CFLAGS="-Wno-error=implicit-function-declaration" AS="/Users/cschen/llvm/release/build/bin/clang -target x86_64-apple-darwin21.2.0 -static -fintegrated-as -c" ../newlib/configure // pass except doc/ fail
+cschen@cschendeiMac build % CC=/Users/cschen/llvm/release/build/bin/clang CFLAGS="-Wno-error=implicit-function-declaration" AS="/Users/cschen/llvm/release/build/bin/clang -target x86_64-unknown-linux-gnu -static -fintegrated-as -c" ../newlib/configure // pass except doc/ fail
 /Users/cschen/llvm/release/build/bin/clang -g  -o doc/makedoc.o -c ../newlib/doc/makedoc.c
 ../newlib/doc/makedoc.c:38:10: fatal error: 'stdio.h' file not found
 #include <stdio.h>
