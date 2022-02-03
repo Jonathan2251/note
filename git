@@ -7,6 +7,14 @@ git push -f
 git rebase master workbranch // master's new changes to bottom of workbranch
 git rebase workbranch master // move head of master to top of workbranch
 
+// add tag
+git tag -l
+git tag -a release_12_0_6 -m "release version 12.0.6"
+git push origin release_12_0_6
+git push --delete origin tagname
+git tag --delete tagname
+
+
 // Biren steps
 // on master branch
 git remote add dev git@github01.birentech.com:e00241/llvm-project.git
