@@ -5,6 +5,7 @@ https://www.qemu.org/download/
 git clone https://gitlab.com/qemu-project/qemu.git
 
 // baremetal
+It can compile and run git/ex/c++/3/main.copp too.
 
 jonathanchen@hz-compiler1:/local/git$ /local/riscv_newlib/bin/clang hello.c -o hello_newlib
 jonathanchen@hz-compiler1:/local/git$ /local/git/qemu/build/qemu-riscv64 hello_newlib
