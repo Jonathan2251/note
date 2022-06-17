@@ -1,10 +1,16 @@
 #!/usr/bin/env bash
 
-source var-office-riscv-toolchain-setup.sh
-#source var-home-riscv-toolchain-setup.sh
+GNU_SRC_DIR=$HOME/riscv/git
+LLVM_SRC_DIR=$HOME/riscv/git
+GNU_NEWLIB_INSTALL_DIR=$HOME/riscv/riscv_newlib
+LLVM_NEWLIB_BUILD_DIR=$LLVM_SRC_DIR/llvm-project/build_riscv_newlib
+
+GNU_LINUX_INSTALL_DIR=$HOME/riscv/riscv_linux
+LLVM_LINUX_BUILD_DIR=$LLVM_SRC_DIR/llvm-project/build_riscv_linux
+
 
 get_llvm() {
-  pushd $HOME/llvm
+  pushd $LLVM_SRC_DIR
   git clone https://github.com/llvm/llvm-project.git
   cd llvm-project
   git checkout -b 13.x origin/release/13.x
@@ -71,7 +77,7 @@ build_llvm_toolchain() {
   popd
 }
 
-#get_llvm;
+get_llvm;
 check;
 build_gnu_toolchain;
 build_llvm_toolchain;
