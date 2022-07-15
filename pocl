@@ -9,4 +9,40 @@ cschen@cschen-Aspire-TC-860:~/git/pocl/build/tests/runtime$ ./test_clCreateKerne
 
 POCL_DEBUG=all ctest -V -R kernel/test_shuffle_char
 POCL_DEBUG=all ctest -V -R runtime/clCreateKernel
+POCL_DEBUG=all ctest -V -R runtime/clCreateKernelsInProgram
 https://github.com/pocl/pocl/issues/964
+// clCreateKernelsInProgram has run kernel while clCreateKernel has not.
+
+
+~/git/pocl/build$ POCL_DEBUG=all ./tests/runtime/test_clCreateKernelsInProgram
+...
+[2022-07-15 08:43:44.140733258219579]POCL: in fn pocl_init_devices at line 529:
+  |   WARNING |  cschen:Loading /home/cschen/git/pocl/build/lib/CL/pocl/libpocl-devices-basic.so failed: /home/cschen/git/pocl/build/lib/CL/pocl/libpocl-devices-basic.so: cannot open shared object file: No such file or directory
+
+
+~/git/pocl/build$ POCL_DEBUG=all ctest -V -R runtime/clCreateKernelsInProgram
+...
+109: [2022-07-15 08:44:52.432943409] POCL: in fn pocl_init_devices at line 529:
+109:   *** WARNING ***  |   WARNING |  cschen:Loading /home/cschen/git/pocl/build/lib/CL/devices/basic/libpocl-devices-basic.so failed: (null)
+
+
+// Temporary fix!!!
+~/git/pocl/tests/runtime$ touch test_clCreateKernelsInProgram.c
+~/git/pocl/build$ make VERBOSE=1|grep test_clCreateKernelsInProgram
+...
+cd /home/cschen/git/pocl/build && /usr/bin/cmake -E cmake_depends "Unix Makefiles" /home/cschen/git/pocl /home/cschen/git/pocl/tests/runtime /home/cschen/git/pocl/build /home/cschen/git/pocl/build/tests/runtime /home/cschen/git/pocl/build/tests/runtime/CMakeFiles/test_clCreateKernelsInProgram.dir/DependInfo.cmake --color=
+make  -f tests/runtime/CMakeFiles/test_clCreateKernelsInProgram.dir/build.make tests/runtime/CMakeFiles/test_clCreateKernelsInProgram.dir/build
+[ 88%] Building C object tests/runtime/CMakeFiles/test_clCreateKernelsInProgram.dir/test_clCreateKernelsInProgram.c.o
+cd /home/cschen/git/pocl/build/tests/runtime && /usr/lib/llvm-13/bin/clang -DCL_HPP_TARGET_OPENCL_VERSION=300 -DCL_TARGET_OPENCL_VERSION=300 -DCL_USE_DEPRECATED_OPENCL_1_0_APIS -DCL_USE_DEPRECATED_OPENCL_1_1_APIS -DCL_USE_DEPRECATED_OPENCL_1_2_APIS -DCL_USE_DEPRECATED_OPENCL_2_0_APIS -DCL_USE_DEPRECATED_OPENCL_2_1_APIS -DCL_USE_DEPRECATED_OPENCL_2_2_APIS -I/home/cschen/git/pocl/build -I/home/cschen/git/pocl/include -I/home/cschen/git/pocl/include/hpp -I/home/cschen/git/pocl/poclu -I/home/cschen/git/pocl -g -fPIE -Werror=implicit-function-declaration -Wincompatible-pointer-types -Wno-ignored-attributes -fvisibility=hidden -MD -MT tests/runtime/CMakeFiles/test_clCreateKernelsInProgram.dir/test_clCreateKernelsInProgram.c.o -MF CMakeFiles/test_clCreateKernelsInProgram.dir/test_clCreateKernelsInProgram.c.o.d -o CMakeFiles/test_clCreateKernelsInProgram.dir/test_clCreateKernelsInProgram.c.o -c /home/cschen/git/pocl/tests/runtime/test_clCreateKernelsInProgram.c
+[ 88%] Linking C executable test_clCreateKernelsInProgram
+cd /home/cschen/git/pocl/build/tests/runtime && /usr/bin/cmake -E cmake_link_script CMakeFiles/test_clCreateKernelsInProgram.dir/link.txt --verbose=1
+/usr/lib/llvm-13/bin/clang -g  -pie CMakeFiles/test_clCreateKernelsInProgram.dir/test_clCreateKernelsInProgram.c.o -o test_clCreateKernelsInProgram  -Wl,-rpath,/home/cschen/git/pocl/build/lib/CL ../../poclu/libpoclu.a ../../lib/CL/libOpenCL.so.2.9.0 -L/usr/lib/x86_64-linux-gnu -lhwloc /usr/lib/llvm-13/lib/libclang-cpp.so /usr/lib/llvm-13/lib/libLLVM-13.so -lrt -lm -ldl -lm -ldl 
+
+// change link path for libpocl-devices-basic.so then PASS
+~/git/pocl/build/tests/runtime$ /usr/lib/llvm-13/bin/clang -g  -pie CMakeFiles/test_clCreateKernelsInProgram.dir/test_clCreateKernelsInProgram.c.o -o test_clCreateKernelsInProgram  -Wl,-rpath,/usr/local/lib/pocl ../../poclu/libpoclu.a ../../lib/CL/libOpenCL.so.2.9.0 -L/usr/lib/x86_64-linux-gnu -lhwloc /usr/lib/llvm-13/lib/libclang-cpp.so /usr/lib/llvm-13/lib/libLLVM-13.so -lrt -lm -ldl -lm -ldl
+
+~/git/pocl/build/tests/runtime$ ./test_clCreateKernelsInProgram
+argv[0]: ./test_clCreateKernelsInProgram
+Hello
+World
+
