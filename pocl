@@ -1,0 +1,12 @@
+cschen@cschen-Aspire-TC-860:~/git/pocl/build/tests/runtime$ export POCL_DEBUG=err,warn
+cschen@cschen-Aspire-TC-860:~/git/pocl/build/tests/runtime$ ./test_clCreateKernel
+** Final POCL_DEBUG flags: 18000000000 
+[2022-07-14 02:56:44.140721241865908]POCL: in fn pocl_init_devices at line 531:
+  |   WARNING |  Loading /home/cschen/git/pocl/build/lib/CL/pocl/libpocl-devices-basic.so failed: /home/cschen/git/pocl/build/lib/CL/pocl/libpocl-devices-basic.so: cannot open shared object file: No such file or directory
+[2022-07-14 02:56:44.140549443303411]POCL: in fn pocl_init_devices at line 541:
+  |   WARNING |  Loading libpocl-devices-basic.so failed: libpocl-devices-basic.so: cannot open shared object file: No such file or directory
+
+
+POCL_DEBUG=all ctest -V -R kernel/test_shuffle_char
+POCL_DEBUG=all ctest -V -R runtime/clCreateKernel
+https://github.com/pocl/pocl/issues/964
