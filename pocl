@@ -46,3 +46,12 @@ argv[0]: ./test_clCreateKernelsInProgram
 Hello
 World
 
+// Then I can use gdb as follows,
+~/git/pocl/build/tests/runtime$ gdb --args ./test_clCreateKernelsInProgram
+(gdb) b test_clCreateKernelsInProgram.c:23
+Breakpoint 1 at 0x23b4: file /home/cschen/git/pocl/tests/runtime/test_clCreateKernelsInProgram.c, line 23.
+(gdb) r
+...
+Breakpoint 1, main (argc=1, argv=0x7fffffffdfa8) at /home/cschen/git/pocl/tests/runtime/test_clCreateKernelsInProgram.c:23
+23	  err = poclu_get_any_device(&ctx, &did, &queue);
+
