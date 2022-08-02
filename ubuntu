@@ -9,6 +9,10 @@ Boot option: 1. Removable Device 2. UEFI... 3. Windows
 2. windows - start - control panel - system & security - Power option - Change what the power buttons do - Change settings currently unavailable - Uncheck the item Turn on fast start up
 ref. solution 2 from https://windowsreport.com/fix-dual-boot-windows-10-ubuntu/
 
+// My pc desktop Acer Aspire-TC860
+// enter bios by pressing "del" key
+// EFS... is usb, removable device is not
+// press F12 to boot from usb stick
 // create usb stick on ubuntu
 https://ubuntu.com/tutorials/create-a-usb-stick-on-ubuntu#3-launch-startup-disk-creator
 
