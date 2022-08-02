@@ -11,7 +11,7 @@ ref. solution 2 from https://windowsreport.com/fix-dual-boot-windows-10-ubuntu/
 
 // My pc desktop Acer Aspire-TC860
 // enter bios by pressing "del" key
-// EFS... is usb, removable device is not
+// UEFI... is usb, removable device is not
 // press F12 to boot from usb stick
 // create usb stick on ubuntu
 https://ubuntu.com/tutorials/create-a-usb-stick-on-ubuntu#3-launch-startup-disk-creator
