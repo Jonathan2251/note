@@ -31,7 +31,7 @@ https://linuxize.com/post/how-to-add-swap-space-on-ubuntu-18-04/
 
 // chinese input setting
 http://shiunxun.blogspot.com/2018/04/ubuntu-1804.html
-setting - region & language - manage installed languages - install languages - Install / Remove Languages - add Chinese (simplifed) and (traditional) - apply - "restart computer" - + - Add a Input source - Other - Chinese (chewing)
+setting - region & language - manage installed languages - install languages - Install / Remove Languages - add Chinese (simplifed) and (traditional) - Apply System-Wide - "restart computer" - + - Add a Input source - Other - Chinese (chewing)
 
 // Fix unclean file system (0,0) problem in mount
 sudo ntfsfix /dev/sda5
