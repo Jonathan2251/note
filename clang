@@ -27,8 +27,18 @@ example:
   llvm-clang-samples.patch
   build with llvm-6.0.0
 
+// clang doc
+https://clang.llvm.org/docs/index.html
+
+// clang-query
+https://static.linaro.org/connect/yvr18/presentations/yvr18-223.pdf
+
+// build clang-tools-extra on llvm 14.x
+cmake -DCMAKE_BUILD_TYPE=Debug -DLLVM_ENABLE_PROJECTS="clang;clang-tools-extra" -DLLVM_PARALLEL_COMPILE_JOBS=4 -DLLVM_PARALLEL_LINK_JOBS=1 -G "Ninja" ../llvm -DCLANG_BUILD_EXAMPLES=ON -DLLVM_BUILD_TESTS=ON
+
 // clang AST structure
 http://swtv.kaist.ac.kr/courses/cs453-fall13/Clang%20tutorial%20v4.pdf
+https://clang.llvm.org/docs/RAVFrontendAction.html
 
 // clang build cross compiler
 https://clang.llvm.org/docs/CrossCompilation.html
