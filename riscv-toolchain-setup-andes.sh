@@ -2,8 +2,10 @@
 
 # Verified on ubuntu 18.04
 # mkdir riscv/git, riscv/riscv_newlib, riscv_linux befor running this bash script
+export RISCV_DIR=$HOME/Andes/riscv
 export GNU_SRC_DIR=$HOME/Andes/riscv/git
-export LLVM_SRC_DIR=$HOME/Andes/riscv/llvm-package/source/llvm-project
+export ANDES_LLVM_DIR=$HOME/Andes/20220823_ANGT-IPLA-202201/llvm-package/source
+export LLVM_SRC_DIR=$HOME/Andes/riscv/llvm-project
 
 # More: install cmake from source since the version of cmake in Ubuntu 18.04 is 
 # too old.
@@ -25,6 +27,13 @@ riscv_gnu_toolchain_prerequisites() {
 
 riscv_llvm_prerequisites() {
   sudo apt-get install ninja-build
+}
+
+get_llvm() {
+  pushd $RISCV_DIR
+  rm -rf llvm-project
+  tar -xvf $ANDES_LLVM_DIR/llvm-project.tar.gz
+  popd
 }
 
 check() {
@@ -118,7 +127,7 @@ build_llvm_toolchain() {
 
 riscv_gnu_toolchain_prerequisites;
 riscv_llvm_prerequisites;
-#get_llvm;
+get_llvm;
 check;
 build_gnu_toolchain;
 build_llvm_toolchain;
