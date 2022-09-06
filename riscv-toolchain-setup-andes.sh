@@ -35,8 +35,8 @@ get_llvm_from_package() {
 
 get_llvm_from_patch() {
   pushd $RISCV_DIR
-#  rm -rf llvm-project
-#  git clone -b llvmorg-13.0.0 https://github.com/llvm/llvm-project.git
+  rm -rf llvm-project
+  git clone -b llvmorg-13.0.0 https://github.com/llvm/llvm-project.git
   cd llvm-project
   git am -k $RISCV_DIR/llvm-package/patch/patch/*.patch
   popd
@@ -44,9 +44,11 @@ get_llvm_from_patch() {
 
 get_gnu_toolchain_newlib() {
   pushd $RISCV_DIR
+  rm -rf riscv_newlib
 # nds64le-elf-newlib-v5d.tar.gz is from Andes' pre-build
   tar -xvf nds64le-elf-newlib-v5d.tar.gz
   mv global/tools/Andestech/AndeSight_STD_v500/toolchains/nds64le-elf-newlib-v5d riscv_newlib
+  rm -rf global
   popd
 }
 
