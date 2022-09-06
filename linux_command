@@ -9,3 +9,6 @@ https://stackoverflow.com/questions/16541582/find-multiple-files-and-rename-them
 1. rename *.cpp and *.hpp to *.cc and *.h
 find src/ -name "*.cpp" -exec rename -v 's/\.cpp$/\.cc/i' {} \;              // {
 find include/ -name "*.hpp" -exec rename -v 's/\.hpp$/\.h/i' {} \;
+
+// display directory size
+du -h ~/llvm
