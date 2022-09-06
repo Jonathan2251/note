@@ -3,7 +3,7 @@
 # Verified on ubuntu 18.04
 # mkdir riscv/git, riscv/riscv_newlib, riscv_linux befor running this bash script
 export RISCV_DIR=$HOME/Andes/riscv
-export ANDES_LLVM_DIR=$HOME/Andes/20220823_ANGT-IPLA-202201/llvm-package/source
+export ANDES_LLVM_DIR=$HOME/Andes/riscv/llvm-package/source
 export LLVM_SRC_DIR=$HOME/Andes/riscv/llvm-project
 
 # More: install cmake from source since the version of cmake in Ubuntu 18.04 is 
