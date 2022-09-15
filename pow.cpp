@@ -20,18 +20,18 @@ Continuing.
 
 #include <math.h>
 
-int gStart = 3;
-int gI = 100;
-int test_global()
+double base = 100;
+double power = 2;
+double test_math()
 {
-  int res = 0;
+  double res = 0;
 
-  res = pow(gI, 2);
+  res = pow(base, power);
 
   return res;
 }
 
 int main() {
-  int a = test_global();
+  double a = test_math();
   return 0;
 }
