@@ -94,3 +94,6 @@ git config --global user.email "email address"
 // set config
 vi .git/config 
 or git config user.email "gamma_chen@yahoo.com.tw"
+
+// setup new repository
+https://www.atlassian.com/git/tutorials/setting-up-a-repository
