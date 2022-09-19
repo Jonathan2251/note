@@ -44,10 +44,10 @@ get_llvm_from_patch() {
 
 get_gnu_toolchain_newlib() {
   pushd $RISCV_DIR
-  rm -rf riscv_newlib
+  rm -rf nds64le-elf-newlib-v5d
 # nds64le-elf-newlib-v5d.tar.gz is from Andes' pre-build
   tar -xvf nds64le-elf-newlib-v5d.tar.gz
-  mv global/tools/Andestech/AndeSight_STD_v500/toolchains/nds64le-elf-newlib-v5d riscv_newlib
+  mv global/tools/Andestech/AndeSight_STD_v500/toolchains/nds64le-elf-newlib-v5d .
   rm -rf global
   popd
 }
