@@ -97,3 +97,7 @@ or git config user.email "gamma_chen@yahoo.com.tw"
 
 // setup new repository
 https://www.atlassian.com/git/tutorials/setting-up-a-repository
+
+// set Linux machine for git user/email for Phoenix before checkout Phoenix
+git config --global user.email jonathanchen
+git config --global user.email jonathan.chen@lightelligence.ai
