@@ -46,6 +46,7 @@ get_llvm_from_Phoenix() {
   pushd $RISCV_DIR
   rm -rf Phoenix
   git clone https://gitlab.lightelligence.co/software/Phoenix.git
+  rm -rf llvm-project
   ln -s Phoenix/llvm-project llvm-project 
   popd
 }
@@ -53,6 +54,8 @@ get_llvm_from_Phoenix() {
 get_gnu_toolchain_newlib() {
   pushd $RISCV_DIR
   rm -rf nds64le-elf-newlib-v5d
+  read -p "token id: " token_id
+  curl -k -o ./nds64le-elf-newlib-v5d.tar.gz --request GET --header PRIVATE-TOKEN:$token_id "https://idc-code1.int.lightelligence.co/api/v4/projects/190/packages/generic/Andes/13.0.0/nds64le-elf-newlib-v5d.tar.gz"
 # nds64le-elf-newlib-v5d.tar.gz is from Andes' pre-build
   tar -xvf nds64le-elf-newlib-v5d.tar.gz
   mv global/tools/Andestech/AndeSight_STD_v500/toolchains/nds64le-elf-newlib-v5d .
@@ -95,8 +98,8 @@ build_llvm_toolchain() {
   popd
 }
 
-#riscv_gnu_toolchain_prerequisites;
-#riscv_llvm_prerequisites;
+riscv_gnu_toolchain_prerequisites;
+riscv_llvm_prerequisites;
 #get_llvm_from_package;
 #get_llvm_from_patch;
 get_llvm_from_Phoenix;
