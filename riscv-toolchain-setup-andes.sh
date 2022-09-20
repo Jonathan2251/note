@@ -42,6 +42,14 @@ get_llvm_from_patch() {
   popd
 }
 
+get_llvm_from_Phoenix() {
+  pushd $RISCV_DIR
+  rm -rf Phoenix
+  git clone https://gitlab.lightelligence.co/software/Phoenix.git
+  ln -s Phoenix/llvm-project llvm-project 
+  popd
+}
+
 get_gnu_toolchain_newlib() {
   pushd $RISCV_DIR
   rm -rf nds64le-elf-newlib-v5d
@@ -60,10 +68,9 @@ get_gnu_toolchain_newlib() {
 # $GNU_NEWLIB_INSTALL_DIR/clang --gcc-toolchain=$GNU_NEWLIB_INSTALL_DIR \
 #   --sysroot=$GNU_NEWLIB_INSTALL_DIR/sysroot/ --static test.c
 build_llvm_toolchain() {
-  pushd $LLVM_SRC_DIR
-#  rm -rf build_newlib
-#  mkdir build_newlib
-#  cd build_newlib
+  rm -rf $LLVM_NEWLIB_BUILD_DIR
+  mkdir $LLVM_NEWLIB_BUILD_DIR
+  pushd $LLVM_NEWLIB_BUILD_DIR
 #  cmake -G "Ninja" ../llvm \
 #  -DCMAKE_INSTALL_PREFIX=$GNU_NEWLIB_INSTALL_DIR \
 #  -DLLVM_ENABLE_PROJECTS='clang' \
@@ -77,9 +84,6 @@ build_llvm_toolchain() {
 #  ninja install
 #  popd
 
-  rm -rf build_riscv_newlib
-  mkdir build_riscv_newlib
-  pushd $LLVM_NEWLIB_BUILD_DIR
   cmake -G "Ninja" -DCMAKE_BUILD_TYPE=Debug -DLLVM_TARGETS_TO_BUILD="RISCV" \
   -DLLVM_ENABLE_PROJECTS="clang"  \
   -DLLVM_OPTIMIZED_TABLEGEN=On -DLLVM_INSTALL_TOOLCHAIN_ONLY=Off \
@@ -95,5 +99,6 @@ build_llvm_toolchain() {
 #riscv_llvm_prerequisites;
 #get_llvm_from_package;
 #get_llvm_from_patch;
-#get_gnu_toolchain_newlib;
+get_llvm_from_Phoenix;
+get_gnu_toolchain_newlib;
 build_llvm_toolchain;
