@@ -1,4 +1,5 @@
 /*
+pass:
 ~/git/note$ ~/Andes/riscv/nds64le-elf-newlib-v5d/bin/riscv64-elf-g++ atoi.c -march=rv64gv0p10 -O0 -g -mabi=lp64d -mvh -o a.adx -v
 ~/git/note$ ~/Andes/riscv/nds64le-elf-newlib-v5d/bin/clang atoi.c -menable-experimental-extensions -march=rv64gcv0p10 -O0 -g -mabi=lp64d -o a.adx  -v
 
@@ -21,6 +22,12 @@ $21 = 2
 (gdb) c
 Continuing.
 
+pass both link and sc_sim:
+~/git/note$ ~/13.0.0/riscv/nds64le-elf-newlib-v5d/bin/clang atoi.c -menable-experimental-extensions -march=rv64gcv0p10 -O0 -g -mabi=lp64d -o a.adx  -v
+13.x: ~/git/note$ ~/riscv/nds64le-elf-newlib-v5d/bin/clang atoi.c -menable-experimental-extensions -march=rv64gcv0p10 -O0 -g -mabi=lp64d -o a.adx  -v
+
+pass link and fail on sc_sim:
+~/git/note$ ~/14.x/riscv/nds64le-elf-newlib-v5d/bin/clang atoi.c -menable-experimental-extensions -march=rv64gcv1p0 -O0 -g -mabi=lp64d -o a.adx  -v
 */
 
 //#include <stdio.h>      /* printf */
