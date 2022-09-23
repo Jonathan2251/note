@@ -1,13 +1,15 @@
 #!/usr/bin/env bash
 
 # Verified on ubuntu 18.04
-# mkdir riscv/git, riscv/riscv_newlib, riscv_linux befor running this bash script
-export RISCV_DIR=$HOME/Andes/riscv
+# mkdir andes/riscv/git, $GNU_NEWLIB_INSTALL_DIR befor running this bash script
+#export GNU_NEWLIB_INSTALL_DIR=/usr/local/riscv/andes/nds64le-elf-newlib-v5d
+export GNU_NEWLIB_INSTALL_DIR=/usr/local/riscv/andes/riscv_newlib
+
+export RISCV_DIR=$HOME/andes/riscv
 export ANDES_LLVM_DIR=$RISCV_DIR/llvm-package/source
 export LLVM_SRC_DIR=$RISCV_DIR/llvm-project
+export GNU_SRC_DIR=$HOME/andes/riscv/git
 
-#export GNU_NEWLIB_INSTALL_DIR=$RISCV_DIR/nds64le-elf-newlib-v5d
-export GNU_NEWLIB_INSTALL_DIR=$RISCV_DIR/riscv_newlib
 export LLVM_NEWLIB_BUILD_DIR=$LLVM_SRC_DIR/build_riscv_newlib
 
 # More: install cmake from source since the version of cmake in Ubuntu 18.04 is 
@@ -20,6 +22,7 @@ riscv_gnu_toolchain_prerequisites() {
   if [ ! -f "/usr/bin/python" ]; then
     sudo ln -s /usr/bin/python3 /usr/bin/python
   fi
+  sudo apt-get install ninja-build
 }
 
 riscv_llvm_prerequisites() {
