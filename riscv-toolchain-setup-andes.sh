@@ -6,11 +6,12 @@ export RISCV_DIR=$HOME/Andes/riscv
 export ANDES_LLVM_DIR=$RISCV_DIR/llvm-package/source
 export LLVM_SRC_DIR=$RISCV_DIR/llvm-project
 
+#export GNU_NEWLIB_INSTALL_DIR=$RISCV_DIR/nds64le-elf-newlib-v5d
+export GNU_NEWLIB_INSTALL_DIR=$RISCV_DIR/riscv_newlib
+export LLVM_NEWLIB_BUILD_DIR=$LLVM_SRC_DIR/build_riscv_newlib
+
 # More: install cmake from source since the version of cmake in Ubuntu 18.04 is 
 # too old.
-
-export GNU_NEWLIB_INSTALL_DIR=$RISCV_DIR/nds64le-elf-newlib-v5d
-export LLVM_NEWLIB_BUILD_DIR=$LLVM_SRC_DIR/build_riscv_newlib
 
 riscv_gnu_toolchain_prerequisites() {
   sudo apt-get install autoconf automake autotools-dev curl python3 libmpc-dev \
@@ -51,7 +52,7 @@ get_llvm_from_Phoenix() {
   popd
 }
 
-get_gnu_toolchain_newlib() {
+get_prebuild_nds_gnu_toolchain() {
   pushd $RISCV_DIR
   rm -rf nds64le-elf-newlib-v5d
   read -p "token id: " token_id
@@ -60,6 +61,23 @@ get_gnu_toolchain_newlib() {
   tar -xvf nds64le-elf-newlib-v5d.tar.gz
   mv global/tools/Andestech/AndeSight_STD_v500/toolchains/nds64le-elf-newlib-v5d .
   rm -rf global
+  popd
+}
+
+build_gnu_toolchain() {
+  pushd $GNU_SRC_DIR
+  git clone https://github.com/riscv/riscv-gnu-toolchain
+  cd riscv-gnu-toolchain
+#  Looks branch change from original/rvv-intrinsic to origin/__archive__
+#  git checkout -b rvv-intrinsic origin/rvv-intrinsic
+# commit 409b951ba6621f2f115aebddfb15ce2dd78ec24f of master branch is work for vadd.vv of vadd1.c
+  mkdir build_newlib
+  cd build_newlib
+# NX27V is 32-64 bits configurable and has HW float point
+  ../configure --prefix=$GNU_NEWLIB_INSTALL_DIR \
+  --with-arch=rv64gc --with-abi=lp64d
+#  --with-multilib-generator="rv32i-ilp32--;rv32imafd-ilp32--;rv64ima-lp64--"
+  make -j4
   popd
 }
 
@@ -74,19 +92,6 @@ build_llvm_toolchain() {
   rm -rf $LLVM_NEWLIB_BUILD_DIR
   mkdir $LLVM_NEWLIB_BUILD_DIR
   pushd $LLVM_NEWLIB_BUILD_DIR
-#  cmake -G "Ninja" ../llvm \
-#  -DCMAKE_INSTALL_PREFIX=$GNU_NEWLIB_INSTALL_DIR \
-#  -DLLVM_ENABLE_PROJECTS='clang' \
-#  -DCMAKE_BUILD_TYPE=Debug \
-#  -DLLVM_OPTIMIZED_TABLEGEN=On \
-#  -DLLVM_INSTALL_TOOLCHAIN_ONLY=Off \
-#  -DLLVM_TARGETS_TO_BUILD='RISCV' \
-#  -DLLVM_PARALLEL_COMPILE_JOBS=4 -DLLVM_PARALLEL_LINK_JOBS=1 \
-#  -DLLVM_DEFAULT_TARGET_TRIPLE=riscv64-unknown-elf
-#  ninja
-#  ninja install
-#  popd
-
   cmake -G "Ninja" -DCMAKE_BUILD_TYPE=Debug -DLLVM_TARGETS_TO_BUILD="RISCV" \
   -DLLVM_ENABLE_PROJECTS="clang"  \
   -DLLVM_OPTIMIZED_TABLEGEN=On -DLLVM_INSTALL_TOOLCHAIN_ONLY=Off \
@@ -98,10 +103,11 @@ build_llvm_toolchain() {
   popd
 }
 
-riscv_gnu_toolchain_prerequisites;
-riscv_llvm_prerequisites;
+#riscv_gnu_toolchain_prerequisites;
+#riscv_llvm_prerequisites;
 #get_llvm_from_package;
 #get_llvm_from_patch;
 get_llvm_from_Phoenix;
-get_gnu_toolchain_newlib;
+#get_prebuild_nds_gnu_toolchain;
+build_gnu_toolchain;
 build_llvm_toolchain;
