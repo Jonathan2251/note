@@ -2,13 +2,14 @@
 
 # Verified on ubuntu 18.04
 # mkdir ~/andes/riscv/git, $GNU_NEWLIB_INSTALL_DIR before running this bash script
-#export GNU_NEWLIB_INSTALL_DIR=/usr/local/riscv/andes/nds64le-elf-newlib-v5d
-export GNU_NEWLIB_INSTALL_DIR=/usr/local/riscv/andes/riscv_newlib
 
 export RISCV_DIR=$HOME/andes/riscv
 export ANDES_LLVM_DIR=$RISCV_DIR/llvm-package/source
 export LLVM_SRC_DIR=$RISCV_DIR/llvm-project
 export GNU_SRC_DIR=$HOME/andes/riscv/git
+
+#export GNU_NEWLIB_INSTALL_DIR=$RISCV_DIR/nds64le-elf-newlib-v5d
+export GNU_NEWLIB_INSTALL_DIR=$RISCV_DIR/riscv_newlib
 
 export LLVM_NEWLIB_BUILD_DIR=$LLVM_SRC_DIR/build_riscv_newlib
 
@@ -22,7 +23,6 @@ riscv_gnu_toolchain_prerequisites() {
   if [ ! -f "/usr/bin/python" ]; then
     sudo ln -s /usr/bin/python3 /usr/bin/python
   fi
-  sudo apt-get install ninja-build
 }
 
 riscv_llvm_prerequisites() {
@@ -80,7 +80,7 @@ build_gnu_toolchain() {
   ../configure --prefix=$GNU_NEWLIB_INSTALL_DIR \
   --with-arch=rv64gc --with-abi=lp64d
 #  --with-multilib-generator="rv32i-ilp32--;rv32imafd-ilp32--;rv64ima-lp64--"
-  sudo make -j4
+  make -j4
   popd
 }
 
@@ -102,15 +102,22 @@ build_llvm_toolchain() {
   -DLLVM_PARALLEL_LINK_JOBS=1 -DLLVM_DEFAULT_TARGET_TRIPLE=riscv64-unknown-elf \
   ../llvm
   ninja
-  sudo ninja install
+  ninja install
   popd
 }
 
-#riscv_gnu_toolchain_prerequisites;
-#riscv_llvm_prerequisites;
+more_install() {
+  cp -f $LLVM_NEWLIB_BUILD_DIR/bin/llvm-lit $GNU_NEWLIB_INSTALL_DIR/bin/.
+  sudo rm -rf /usr/local/riscv/andes/riscv_newlib
+  sudo cp -rf $GNU_NEWLIB_INSTALL_DIR /usr/local/riscv/andes/.
+}
+
+riscv_gnu_toolchain_prerequisites;
+riscv_llvm_prerequisites;
 #get_llvm_from_package;
 #get_llvm_from_patch;
-#get_llvm_from_Phoenix;
+get_llvm_from_Phoenix;
 #get_prebuild_nds_gnu_toolchain;
 build_gnu_toolchain;
 build_llvm_toolchain;
+more_install;
