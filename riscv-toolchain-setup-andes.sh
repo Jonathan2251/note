@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Verified on ubuntu 18.04
-# mkdir andes/riscv/git, $GNU_NEWLIB_INSTALL_DIR befor running this bash script
+# mkdir ~/andes/riscv/git, $GNU_NEWLIB_INSTALL_DIR before running this bash script
 #export GNU_NEWLIB_INSTALL_DIR=/usr/local/riscv/andes/nds64le-elf-newlib-v5d
 export GNU_NEWLIB_INSTALL_DIR=/usr/local/riscv/andes/riscv_newlib
 
@@ -80,7 +80,7 @@ build_gnu_toolchain() {
   ../configure --prefix=$GNU_NEWLIB_INSTALL_DIR \
   --with-arch=rv64gc --with-abi=lp64d
 #  --with-multilib-generator="rv32i-ilp32--;rv32imafd-ilp32--;rv64ima-lp64--"
-  make -j4
+  sudo make -j4
   popd
 }
 
@@ -102,7 +102,7 @@ build_llvm_toolchain() {
   -DLLVM_PARALLEL_LINK_JOBS=1 -DLLVM_DEFAULT_TARGET_TRIPLE=riscv64-unknown-elf \
   ../llvm
   ninja
-  ninja install
+  sudo ninja install
   popd
 }
 
@@ -110,7 +110,7 @@ build_llvm_toolchain() {
 #riscv_llvm_prerequisites;
 #get_llvm_from_package;
 #get_llvm_from_patch;
-get_llvm_from_Phoenix;
+#get_llvm_from_Phoenix;
 #get_prebuild_nds_gnu_toolchain;
 build_gnu_toolchain;
 build_llvm_toolchain;
