@@ -23,6 +23,10 @@ $21 = 2
 Continuing.
 
 pass both link and sc_sim:
+// pass on riscv-gnu-toolchain with Andes' clang/llvm. ~/Andes/riscv/riscv_newlib is open source riscv-gnu-toolchain
+~/Andes/riscv/riscv_newlib/bin/clang++ -menable-experimental-extensions atoi.c -march=rv64gcv0p10 -O0 -g -mabi=lp64d -o a.adx  -v
+~/git/note$ ~/Andes/riscv/riscv_newlib/bin/riscv64-unknown-elf-gdb a.adx
+// pass on both open source riscv-gnu-toolchain with open source clang/llvm 13.0.0 
 ~/git/note$ ~/riscv/13.0.0/riscv_newlib/bin/clang atoi.c -menable-experimental-extensions -march=rv64gcv0p10 -O0 -g -mabi=lp64d -o a.adx  -v
 13.x: ~/git/note$ ~/riscv/riscv_newlib/bin/clang atoi.c -menable-experimental-extensions -march=rv64gcv0p10 -O0 -g -mabi=lp64d -o a.adx  -v
 
@@ -31,7 +35,7 @@ pass link and fail on sc_sim:
 
 fail:
 ~/git/note$ ~/Andes/riscv/nds64le-elf-newlib-v5d/bin/riscv64-elf-gdb a.adx
-home/jonathanchen/Andes/riscv/nds64le-elf-newlib-v5d/bin/riscv64-unknown-elf-gdb: error while loading shared libraries: libpython3.4m.so.1.0: cannot open shared object file: No such file or directory
+/home/jonathanchen/Andes/riscv/nds64le-elf-newlib-v5d/bin/riscv64-unknown-elf-gdb: error while loading shared libraries: libpython3.4m.so.1.0: cannot open shared object file: No such file or directory
 */
 
 //#include <stdio.h>      /* printf */
