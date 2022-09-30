@@ -1,3 +1,7 @@
+// forcet git pull, reset local branch from remote
+git fetch --all
+git reset --hard origin/master
+
 // clone specific branch 13.x
 git clone -b <branch> <repo>
 e.g. git clone -b 13.x https://github.com/llvm/llvm-project.git
