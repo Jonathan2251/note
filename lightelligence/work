@@ -1,0 +1,15 @@
+jonathanchen@eli-ubuntu:~/andes/riscv/Phoenix/llvm-project/clang/test/CodeGen/RISCV$ vi ../../../include/clang/Basic/BuiltinsRISCV.def
+
+#include "clang/Basic/riscv_vector_builtins.inc"
+
+TARGET_BUILTIN(__builtin_bmc_tensor_load0, "v", "nr", "experimental-zbb,64bit")
+
+jonathanchen@eli-ubuntu:~/andes/riscv/Phoenix/llvm-project/clang/test/CodeGen/RISCV$ cat builtins-bmc-tensor-load0.c 
+// ~/andes/riscv/Phoenix/llvm-project/build_riscv_newlib/bin/clang -menable-experimental-extensions -march=rv64gcv0p10 -O0 -g -mabi=lp64d -emit-llvm -S builtins-bmc-tensor-load0.c -o -
+
+int foo() {
+// CHECK: call i32 @llvm.bmc.tensor_load0
+  __builtin_bmc_tensor_load0();
+  return 0;
+}
+
