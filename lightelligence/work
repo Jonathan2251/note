@@ -1,3 +1,14 @@
+jonathanchen@eli-ubuntu:~/andes/riscv/Phoenix/llvm-project/clang/test/CodeGen/RISCV$ vi ../../../include/clang/Basic/Builtins.def
+
+BUILTIN(__builtin_bmc_tensor_load0, "v", "nr")
+
+
+// Arithmetic Fence: to prevent FP reordering and reassociation optimizations
+LANGBUILTIN(__arithmetic_fence, "v.", "t", ALL_LANGUAGES)
+
+#undef BUILTIN
+
+
 jonathanchen@eli-ubuntu:~/andes/riscv/Phoenix/llvm-project/clang/test/CodeGen/RISCV$ vi ../../../include/clang/Basic/BuiltinsRISCV.def
 
 #include "clang/Basic/riscv_vector_builtins.inc"
@@ -12,4 +23,15 @@ int foo() {
   __builtin_bmc_tensor_load0();
   return 0;
 }
+
+~/andes/riscv/Phoenix/llvm-project/llvm/include/llvm/IR$ vi Intrinsics.td
+
+def int_bmc_tensor_load0 : GCCBuiltin<"__builtin_bmc_tensor_load0">,
+  Intrinsic<[], [],
+  [Commutative, IntrNoMem]>;
+
+
+//===----------------------------------------------------------------------===//
+// Target-specific intrinsics
+//===----------------------------------------------------------------------===//
 
