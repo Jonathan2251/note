@@ -1,41 +1,3 @@
-diff --git a/c++-toolchain/test/builtins-bmc-tensor-load0.c b/c++-toolchain/test/builtins-bmc-tensor-load0.c
-new file mode 100644
-index 000000000..2e3736c86
---- /dev/null
-+++ b/c++-toolchain/test/builtins-bmc-tensor-load0.c
-@@ -0,0 +1,13 @@
-+// NOTE: ~/git/Phoenix/llvm-project/build/bin/clang -menable-experimental-extensions -march=rv64gcv0p10 -O3 -mabi=lp64d -emit-llvm -S builtins-bmc-tensor-load0.c -o -
-+
-+/* NOTE: cp builtins-bmc-tensor-load0.c ~/git/Phoenix/llvm-project/clang/test/. && pushd ~/git/Phoenix/llvm-project/clang/test
-+~/git/Phoenix/llvm-project/build/bin/llvm-lit builtins-bmc-tensor-load0.c 
-+popd */
-+
-+// RUN: %clang_cc1 -triple riscv64 -target-feature +f -target-feature +d -target-feature +experimental-v \
-+// RUN:   -target-feature +experimental-zfh -emit-llvm %s -o - | FileCheck %s
-+int foo() {
-+// CHECK: call void @llvm.bmc.tensor.load0
-+  __builtin_bmc_tensor_load0();
-+  return 0;
-+}
-diff --git a/c++-toolchain/test/builtins-tensor-add.c b/c++-toolchain/test/builtins-tensor-add.c
-new file mode 100644
-index 000000000..62d510a57
---- /dev/null
-+++ b/c++-toolchain/test/builtins-tensor-add.c
-@@ -0,0 +1,13 @@
-+/* NOTE: ~/git/Phoenix/llvm-project/build/bin/clang -menable-experimental-extensions -march=rv64gcv0p10 -O3 -mabi=lp64d -emit-llvm -S builtins-tensor-add.c -o -
-+
-+cp builtins-tensor-add.c ~/git/Phoenix/llvm-project/clang/test/. && pushd ~/git/Phoenix/llvm-project/clang/test
-+~/git/Phoenix/llvm-project/build/bin/llvm-lit builtins-tensor-add.c 
-+popd */
-+
-+// RUN: %clang_cc1 -triple riscv64 -target-feature +f -target-feature +d -target-feature +experimental-v \
-+// RUN:   -target-feature +experimental-zfh -emit-llvm %s -o - | FileCheck %s
-+int foo(int *d, int *s0, int *s1) {
-+// CHECK: call void @llvm.tensor.add
-+  __builtin_tensor_add(d, s0, s1);
-+  return 0;
-+}
 diff --git a/llvm-project/clang/include/clang/Basic/BuiltinsBMC.def b/llvm-project/clang/include/clang/Basic/BuiltinsBMC.def
 new file mode 100644
 index 000000000..0c08aa04f
@@ -75,6 +37,65 @@ index b2b4950f9..7df1eaba2 100644
  // Zbb extension
  TARGET_BUILTIN(__builtin_riscv_orc_b_32, "ZiZi", "nc", "experimental-zbb")
  TARGET_BUILTIN(__builtin_riscv_orc_b_64, "WiWi", "nc", "experimental-zbb,64bit")
+diff --git a/llvm-project/clang/test/CodeGen/RISCV/LT/BMC/_bmc-tensor-load0.c b/llvm-project/clang/test/CodeGen/RISCV/LT/BMC/_bmc-tensor-load0.c
+new file mode 100644
+index 000000000..2e3736c86
+--- /dev/null
++++ b/llvm-project/clang/test/CodeGen/RISCV/LT/BMC/_bmc-tensor-load0.c
+@@ -0,0 +1,13 @@
++// NOTE: ~/git/Phoenix/llvm-project/build/bin/clang -menable-experimental-extensions -march=rv64gcv0p10 -O3 -mabi=lp64d -emit-llvm -S builtins-bmc-tensor-load0.c -o -
++
++/* NOTE: cp builtins-bmc-tensor-load0.c ~/git/Phoenix/llvm-project/clang/test/. && pushd ~/git/Phoenix/llvm-project/clang/test
++~/git/Phoenix/llvm-project/build/bin/llvm-lit builtins-bmc-tensor-load0.c 
++popd */
++
++// RUN: %clang_cc1 -triple riscv64 -target-feature +f -target-feature +d -target-feature +experimental-v \
++// RUN:   -target-feature +experimental-zfh -emit-llvm %s -o - | FileCheck %s
++int foo() {
++// CHECK: call void @llvm.bmc.tensor.load0
++  __builtin_bmc_tensor_load0();
++  return 0;
++}
+diff --git a/llvm-project/clang/test/CodeGen/RISCV/LT/BMC/bmc-tensor-load0.c b/llvm-project/clang/test/CodeGen/RISCV/LT/BMC/bmc-tensor-load0.c
+new file mode 100644
+index 000000000..dd3dfc7c8
+--- /dev/null
++++ b/llvm-project/clang/test/CodeGen/RISCV/LT/BMC/bmc-tensor-load0.c
+@@ -0,0 +1,13 @@
++// NOTE: ~/git/Phoenix/llvm-project/build/bin/clang -menable-experimental-extensions -march=rv64gcv0p10 -O3 -mabi=lp64d -emit-llvm -S builtins-bmc-tensor-load0.c -o -
++
++/* NOTE: cp builtins-bmc-tensor-load0.c ~/git/Phoenix/llvm-project/clang/test/. && pushd ~/git/Phoenix/llvm-project/clang/test
++~/git/Phoenix/llvm-project/build/bin/llvm-lit builtins-bmc-tensor-load0.c 
++popd */
++
++// RUN: %clang -menable-experimental-extensions -march=rv64gcv0p10 -O3 \
++// RUN:   -mabi=lp64d -emit-llvm -S %s -o - | FileCheck %s
++int foo() {
++// CHECK: call void @llvm.bmc.tensor.load0
++  __builtin_bmc_tensor_load0();
++  return 0;
++}
+diff --git a/llvm-project/clang/test/CodeGen/RISCV/LT/BMC/tensor-add.c b/llvm-project/clang/test/CodeGen/RISCV/LT/BMC/tensor-add.c
+new file mode 100644
+index 000000000..c98eb5205
+--- /dev/null
++++ b/llvm-project/clang/test/CodeGen/RISCV/LT/BMC/tensor-add.c
+@@ -0,0 +1,15 @@
++/* NOTE: ~/git/Phoenix/llvm-project/build/bin/clang -menable-experimental-extensions -march=rv64gcv0p10 -O3 -mabi=lp64d -emit-llvm -S builtins-tensor-add.c -o -
++
++cp builtins-tensor-add.c ~/git/Phoenix/llvm-project/clang/test/. && pushd ~/git/Phoenix/llvm-project/clang/test
++~/git/Phoenix/llvm-project/build/bin/llvm-lit builtins-tensor-add.c 
++popd */
++
++// RUN: %clang -menable-experimental-extensions -march=rv64gcv0p10 -O3 \
++// RUN:   -mabi=lp64d -emit-llvm -S %s -o - | FileCheck %s
++// RUN: %clang_cc1 -triple riscv64 -target-feature +f -target-feature +d -target-feature +experimental-v \
++// RUN:   -target-feature +experimental-zfh -emit-llvm %s -o - | FileCheck %s
++int foo(int *d, int *s0, int *s1) {
++// CHECK: call void @llvm.tensor.add
++  __builtin_tensor_add(d, s0, s1);
++  return 0;
++}
 diff --git a/llvm-project/llvm/include/llvm/IR/Intrinsics.td b/llvm-project/llvm/include/llvm/IR/Intrinsics.td
 index 28fcc1326..13b6693dd 100644
 --- a/llvm-project/llvm/include/llvm/IR/Intrinsics.td
