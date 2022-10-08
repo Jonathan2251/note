@@ -1,4 +1,112 @@
-﻿Qeustion for Andes' meeting:
+﻿Auroa SW:
+https://confluence.int.lightelligence.co/display/PHX/SDK+Architecture
+
+
+https://dev.azure.com/LightelligencePlatform/_git/Vanguard?path=/digital/rtl/pmem/SPEC.md&_a=preview
+
+
+
+Phoenix git repository:
+https://gitlab.lightelligence.co/software/Phoenix.git
+https://idc-code1.int.lightelligence.co/software/Phoenix
+
+curl -k --header PRIVATE-TOKEN:${PAT} --upload-file ${package_name} "https://idc-code1.int.lightelligence.co/api/v4/projects/${project_id}/packages/generic/${folder}/${version}/${package_name}"
+e.g. curl -k --header PRIVATE-TOKEN:${PAT} --upload-file nds64le-elf-newlib-v5d.tar.gz "https://idc-code1.int.lightelligence.co/api/v4/projects/190/packages/generic/Andes/13.0.0/nds64le-elf-newlib-v5d.tar.gz"
+curl -k -o <file-path> --request GET --header PRIVATE-TOKEN:${PAT} <HTTP-pack as above>
+e.g. curl -k -o ./nds64le-elf-newlib-v5d.tar.gz --request GET --header PRIVATE-TOKEN:${PAT} "https://idc-code1.int.lightelligence.co/api/v4/projects/190/packages/generic/Andes/13.0.0/nds64le-elf-newlib-v5d.tar.gz"
+
+
+LT ACE:
+git clone https://gitlab.lightelligence.co/rtl_dv_dev/Aurora.git
+https://idc-code1.int.lightelligence.co/rtl_dv_dev/Aurora/-/tree/ckuo/sanity/digital/rtl/acpu/AURORA_ACE/ace
+
+
+Auroa Word doc for CEO:
+https://lightelligence.sharepoint.com/sites/Software2-ProjectManagement/Shared%20Documents/Forms/AllItems.aspx?id=%2Fsites%2FSoftware2%2DProjectManagement%2FShared%20Documents%2FProject%20Management%2FPace%202%2E0%20design%20spec&p=true&ct=1662714447805&or=Teams%2DHL&ga=1
+
+Auroa PM SW doc:
+
+https://lightelligence.sharepoint.com/sites/Software2-ProjectManagement/Shared%20Documents/Forms/AllItems.aspx?id=%2Fsites%2FSoftware2%2DProjectManagement%2FShared%20Documents%2FProject%20Management%2FPace%202%2E0%20design%20spec&p=true&ct=1662518917383&or=Teams%2DHL&ga=1
+
+Vanguard Plan of Record:
+https://confluence.int.lightelligence.co/display/VAN/Vanguard+Plan+of+Record
+
+
+vanguard document:
+http://vanguard.lgt.ai/digital/rtl/pdma/SPEC.html
+
+https://confluence.int.lightelligence.co/display/VAN/Project+416
+
+work items:
+https://dev.azure.com/LightelligencePlatform/Phoenix/_workitems/edit/4912
+
+
+https://confluence.int.lightelligence.co/display/PHX/Backend+Compiler
+
+vanguard: https://confluence.int.lightelligence.co/display/VAN/Vanguard+Plan+of+Record
+
+
+Weekly Study Session
+https://doodle.com/poll/ids3yusk7bbm4kgx?utm_source=poll&utm_medium=link
+
+
+meeting minutes
+https://confluence.int.lightelligence.co/display/PHX/meeting+minutes
+
+
+
+Andes' ticket:
+https://es.andestech.com/tickets.php?id=21484
+
+
+calvin, yuhwa, erwan, ryan, shirley, 百燕飛, 韓丹陽, Herman
+Fuqiang Han 韓福強 DV design verification
+Shawn Zhang & yuhwa: linux driver
+
+
+http://vanguard.lgt.ai/arch/hwspec/arch.html
+
+
+chungshu@ChungShudeMacBook-Air build % pwd
+/Users/chungshu/usb/git/
+chungshu@ChungShudeMacBook-Air build % git clone --recursive https://github.com/apache/tvm tvm
+chungshu@ChungShudeMacBook-Air build % cd tvm
+
+tvm::gtest install
+chungshu@ChungShudeMacBook-Air build % pwd
+/Users/chungshu/usb/git/tvm/googletest/build
+chungshu@ChungShudeMacBook-Air build % cmake -DBUILD_SHARED_LIBS=ON -Wno-dev .. 
+chungshu@ChungShudeMacBook-Air build % make -j4
+
+
+chungshu@ChungShudeMacBook-Air build % pwd
+/Users/chungshu/usb/git/tvm/build
+chungshu@ChungShudeMacBook-Air build % cmake ..
+chungshu@ChungShudeMacBook-Air build % make -j4
+chungshu@ChungShudeMacBook-Air build % make cpptest
+
+https://tvm.apache.org/docs/deploy/index.html#cross-compile-for-risc-v
+
+
+virtual hardware evaluation for Skymizer:
+simulatorˊ
+zibra, VDK, imperas, riscv-TLM
+
+Amazon L1
+Imperis Virtual Platform
+https://en.wikipedia.org/wiki/Direct_Rendering_Manager
+
+
+dpc++:
+https://intel.github.io/llvm-docs/GetStartedGuide.html
+https://scikit-learn.org/stable/
+
+// From Michael: (check)
+https://github.com/cornell-zhang/heterocl
+
+
+
+Qeustion for Andes' meeting:
 
 Andes LLVM-ACE support discussion
 Fri 10/14/2022 8:00 AM - 9:00 AM
