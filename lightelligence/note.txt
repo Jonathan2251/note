@@ -17,7 +17,14 @@ e.g. curl -k -o ./nds64le-elf-newlib-v5d.tar.gz --request GET --header PRIVATE-T
 
 
 LT ACE:
-git clone https://gitlab.lightelligence.co/rtl_dv_dev/Aurora.git
+% git clone https://gitlab.lightelligence.co/rtl_dv_dev/Aurora.git
+% cd Aurora
+Aurora % git checkout -b ckuo/sanity origin/ckuo/sanity
+cd digital/rtl/acpu/AURORA_ACE/ace
+ace % ls
+ace0_bmc.ace	ace0_bmc.v	ace0_bmc.vh	ace1_pmem.ace	ace1_pmem.v	ace1_pmem.vh	ace2_mail.ace	ace2_mail.v	asp_define.vh	isa_yis.h
+ace % pwd
+/Users/cschen/git/Aurora/digital/rtl/acpu/AURORA_ACE/ace
 https://idc-code1.int.lightelligence.co/rtl_dv_dev/Aurora/-/tree/ckuo/sanity/digital/rtl/acpu/AURORA_ACE/ace
 
 
