@@ -120,7 +120,7 @@ Fri 10/14/2022 8:00 AM - 9:00 AM
 Teams meeting
 
 1. Can open source clang/llvm without Andes' patch work with ACE?
-2. Add __builtin function support in ACE:
+2. Currently your ACE does not Support __builtin function, could you add __builtin function support in ACE as the following.
 For instance:
 Add GCCBuiltin<"__builtin_tensor_add">, as follows,
 $ vi $HOME/andes/riscv/Phoenix/llvm-project/llvm/include/llvm/IR/IntrinsicsACE.td 
