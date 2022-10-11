@@ -1,0 +1,19 @@
+﻿TPU Architect, Devices and Services, Silicon
+Google
+In-office:
+Xindian District, New Taipei City, Taiwan
+
+Apply
+Google welcomes people with disabilities.
+Qualifications
+Minimum qualifications:
+Bachelor's degree in Electrical Engineering or Computer Science, or equivalent practical experience.
+2 years of experience working in Software development, Computer Architecture or ML accelerators.
+Experience with Python and C or C++.
+Preferred qualifications:
+Master's or PhD in Computer Science, Electrical Engineering or related technical field.
+Experience with ML Accelerators (e.g. having worked on complex ML Software models or accelerator architectures).
+ Experience writing Machine Learning algorithms (e.g. a good understanding of recommendation systems, NLP).
+Experience architecting and optimizing compilers.
+Experience with software development in one or more programming languages, and with data structures/algorithms.
+Understanding of compiler flows software involved in translating a high-level language (e.g. TensorFlow) to hardware instructions.
