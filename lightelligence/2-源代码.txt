@@ -1,0 +1,311 @@
+// 编译脚本如下
+$ cat riscv-toolchain-setup-andes.sh 
+#!/usr/bin/env bash
+
+# Verified on ubuntu 18.04
+# mkdir ~/andes/riscv/git, $GNU_NEWLIB_INSTALL_DIR before running this bash script
+
+export RISCV_DIR=$HOME/andes/riscv
+export ANDES_LLVM_DIR=$RISCV_DIR/llvm-package/source
+export CURR_DIR=`pwd`
+export LLVM_SRC_DIR=$CURR_DIR/../llvm-project
+export GNU_SRC_DIR=$HOME/andes/riscv/git
+
+#export NEWLIB_INSTALL_NAME=nds64le-elf-newlib-v5d
+export NEWLIB_INSTALL_NAME=riscv_newlib
+
+export GNU_NEWLIB_INSTALL_DIR=$RISCV_DIR/$NEWLIB_INSTALL_NAME
+#export GNU_NEWLIB_INSTALL_DIR=$RISCV_DIR/llvmorg-13.0.0/$NEWLIB_INSTALL_NAME
+
+export LLVM_NEWLIB_BUILD_DIR=$LLVM_SRC_DIR/build_riscv_newlib
+
+# More: install cmake from source since the version of cmake in Ubuntu 18.04 is 
+# too old.
+
+riscv_gnu_toolchain_prerequisites() {
+  sudo apt-get install autoconf automake autotools-dev curl python3 libmpc-dev \
+  libmpfr-dev libgmp-dev gawk build-essential bison flex texinfo gperf libtool \
+  patchutils bc zlib1g-dev libexpat-dev
+  if [ ! -f "/usr/bin/python" ]; then
+    sudo ln -s /usr/bin/python3 /usr/bin/python
+  fi
+}
+
+riscv_llvm_prerequisites() {
+  sudo apt-get install ninja-build
+}
+
+# get Andes llvm from release source
+get_llvm_from_package() {
+  pushd $RISCV_DIR
+  rm -rf llvm-project
+  tar -xvf $ANDES_LLVM_DIR/llvm-project.tar.gz
+  popd
+}
+
+get_llvm_from_patch() {
+  pushd $RISCV_DIR
+  rm -rf llvm-project
+  git clone -b llvmorg-13.0.0 https://github.com/llvm/llvm-project.git
+  cd llvm-project
+  git am -k $RISCV_DIR/llvm-package/patch/patch/*.patch
+  popd
+}
+
+get_prebuild_nds_gnu_toolchain() {
+  pushd $RISCV_DIR
+  rm -rf nds64le-elf-newlib-v5d
+  read -p "token id: " token_id
+  curl -k -o ./nds64le-elf-newlib-v5d.tar.gz --request GET --header PRIVATE-TOKEN:$token_id "https://idc-code1.int.lightelligence.co/api/v4/projects/190/packages/generic/Andes/13.0.0/nds64le-elf-newlib-v5d.tar.gz"
+# nds64le-elf-newlib-v5d.tar.gz is from Andes' pre-build
+  tar -xvf nds64le-elf-newlib-v5d.tar.gz
+  mv global/tools/Andestech/AndeSight_STD_v500/toolchains/nds64le-elf-newlib-v5d .
+  rm -rf global
+  popd
+}
+
+build_gnu_toolchain() {
+  pushd $GNU_SRC_DIR
+  git clone https://github.com/riscv/riscv-gnu-toolchain
+  cd riscv-gnu-toolchain
+#  Looks branch change from original/rvv-intrinsic to origin/__archive__
+#  git checkout -b rvv-intrinsic origin/rvv-intrinsic
+# commit 409b951ba6621f2f115aebddfb15ce2dd78ec24f of master branch is work for vadd.vv of vadd1.c
+  mkdir build_newlib
+  cd build_newlib
+# NX27V is 32-64 bits configurable and has HW float point
+  ../configure --prefix=$GNU_NEWLIB_INSTALL_DIR \
+  --with-arch=rv64gc --with-abi=lp64d
+#  --with-multilib-generator="rv32i-ilp32--;rv32imafd-ilp32--;rv64ima-lp64--"
+  make -j4
+  popd
+}
+
+# DEFAULT_SYSROOT: 
+#   https://stackoverflow.com/questions/66357013/compile-clang-with-alternative-sysroot
+# LLVM_DEFAULT_TARGET_TRIPLE:  
+#   https://clang.llvm.org/docs/CrossCompilation.html#general-cross-compilation-options-in-clang
+# LLVM_INSTALL_UTILS:BOOL
+#   If enabled, utility binaries like FileCheck and not will be installed to CMAKE_INSTALL_PREFIX.
+#   https://llvm.org/docs/CMake.html
+# Use "clang --sysroot" if did not "cmake -DDEFAULT_SYSROOT"
+# $GNU_NEWLIB_INSTALL_DIR/clang --gcc-toolchain=$GNU_NEWLIB_INSTALL_DIR \
+#   --sysroot=$GNU_NEWLIB_INSTALL_DIR/sysroot/ --static test.c
+build_llvm_toolchain() {
+  rm -rf $LLVM_NEWLIB_BUILD_DIR
+  mkdir $LLVM_NEWLIB_BUILD_DIR
+  pushd $LLVM_NEWLIB_BUILD_DIR
+  cmake -G "Ninja" -DCMAKE_BUILD_TYPE=Debug -DLLVM_TARGETS_TO_BUILD="RISCV" \
+  -DLLVM_ENABLE_PROJECTS="clang"  \
+  -DLLVM_OPTIMIZED_TABLEGEN=On -DLLVM_INSTALL_TOOLCHAIN_ONLY=Off \
+  -DCMAKE_INSTALL_PREFIX=$GNU_NEWLIB_INSTALL_DIR -DLLVM_PARALLEL_COMPILE_JOBS=4 \
+  -DLLVM_PARALLEL_LINK_JOBS=1 -DLLVM_DEFAULT_TARGET_TRIPLE=riscv64-unknown-elf \
+  -DLLVM_INSTALL_UTILS=ON ../llvm
+  ninja
+  ninja install
+  popd
+}
+
+install_llvm-lit() {
+# copy to $GNU_NEWLIB_INSTALL_DIR
+  mkdir -p $GNU_NEWLIB_INSTALL_DIR/bin
+  cp $GNU_NEWLIB_INSTALL_DIR/bin/llvm-lit $GNU_NEWLIB_INSTALL_DIR/bin/.
+  mkdir -p $GNU_NEWLIB_INSTALL_DIR/tools/clang/test
+  cp $LLVM_NEWLIB_BUILD_DIR/tools/clang/test/lit.site.cfg.py $GNU_NEWLIB_INSTALL_DIR/tools/clang/test/lit.site.cfg.py 
+  mkdir -p $GNU_NEWLIB_INSTALL_DIR/tools/clang/test/Unit
+  cp $LLVM_NEWLIB_BUILD_DIR/tools/clang/test/Unit/lit.site.cfg.py $GNU_NEWLIB_INSTALL_DIR/tools/clang/test/Unit/lit.site.cfg.py
+  mkdir -p $GNU_NEWLIB_INSTALL_DIR/utils/lit 
+  cp $LLVM_NEWLIB_BUILD_DIR/utils/lit/lit.site.cfg $GNU_NEWLIB_INSTALL_DIR/utils/lit/lit.site.cfg
+  mkdir -p $GNU_NEWLIB_INSTALL_DIR/test
+  cp $LLVM_NEWLIB_BUILD_DIR/test/lit.site.cfg.py $GNU_NEWLIB_INSTALL_DIR/test/lit.site.cfg.py
+  mkdir -p $GNU_NEWLIB_INSTALL_DIR/test/Unit
+  cp $LLVM_NEWLIB_BUILD_DIR/test/Unit/lit.site.cfg.py $GNU_NEWLIB_INSTALL_DIR/test/Unit/lit.site.cfg.py
+# copy to system dir
+  echo "sudo rm -rf /usr/local/riscv/andes/$NEWLIB_INSTALL_NAME"
+  sudo rm -rf /usr/local/riscv/andes/$NEWLIB_INSTALL_NAME
+  echo "sudo cp -rf $GNU_NEWLIB_INSTALL_DIR /usr/local/riscv/andes/."
+  sudo cp -rf $GNU_NEWLIB_INSTALL_DIR /usr/local/riscv/andes/.
+}
+
+riscv_gnu_toolchain_prerequisites;
+riscv_llvm_prerequisites;
+#get_llvm_from_package;
+#get_llvm_from_patch;
+#get_prebuild_nds_gnu_toolchain;
+build_gnu_toolchain;
+build_llvm_toolchain;
+install_llvm-lit;
+
+
+// 源码如下:
+Phoenix % cat llvm-project/clang/include/clang/Basic/BuiltinsBMC.def
+//===-- BuiltinsBMC.def - BMC Builtin function database --------*- C++ -*-==//
+//
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+//===----------------------------------------------------------------------===//
+//
+// This file defines the BMC-specific builtin function database. Users of
+// this file must define the BUILTIN macro to make use of this information.
+//
+//===----------------------------------------------------------------------===//
+
+// The format of this database matches clang/Basic/Builtins.def.
+
+TARGET_BUILTIN(__builtin_bmc_tensor_load0, "v", "n", "experimental-v")
+TARGET_BUILTIN(__builtin_tensor_add, "vi*i*i*", "n", "experimental-v")
+TARGET_BUILTIN(__builtin_riscv_tensor_add, "vLLiLLiLLi", "n", "experimental-v")
+TARGET_BUILTIN(__builtin_riscv_bmc_tensor_matmul, "LLiLLiLLiLLiLLi", "n", "experimental-v")
+
+diff --git a/llvm-project/clang/include/clang/Basic/BuiltinsRISCV.def b/llvm-project/clang/include/clang/Basic/BuiltinsRISCV.def
+index b2b4950f9..7df1eaba2 100644
+--- a/llvm-project/clang/include/clang/Basic/BuiltinsRISCV.def
++++ b/llvm-project/clang/include/clang/Basic/BuiltinsRISCV.def
+@@ -17,6 +17,8 @@
+ 
+ #include "clang/Basic/riscv_vector_builtins.inc"
+ 
++#include "clang/Basic/BuiltinsBMC.def"
++
+diff --git a/llvm-project/llvm/include/llvm/IR/Intrinsics.td b/llvm-project/llvm/include/llvm/IR/Intrinsics.td
+index 28fcc1326..13b6693dd 100644
+--- a/llvm-project/llvm/include/llvm/IR/Intrinsics.td
++++ b/llvm-project/llvm/include/llvm/IR/Intrinsics.td
+@@ -1780,4 +1780,5 @@ include "llvm/IR/IntrinsicsBPF.td"
+ include "llvm/IR/IntrinsicsSystemZ.td"
+ include "llvm/IR/IntrinsicsWebAssembly.td"
+ include "llvm/IR/IntrinsicsRISCV.td"
++include "llvm/IR/IntrinsicsBMC.td"
+ include "llvm/IR/IntrinsicsVE.td"
+
+diff --git a/llvm-project/llvm/include/llvm/IR/IntrinsicsACE.td b/llvm-project/llvm/include/llvm/IR/IntrinsicsACE.td
+index e69de29bb..034419547 100644
+--- a/llvm-project/llvm/include/llvm/IR/IntrinsicsACE.td
++++ b/llvm-project/llvm/include/llvm/IR/IntrinsicsACE.td
+@@ -0,0 +1,7 @@
++def int_riscv_bmc_tensor_matmul : GCCBuiltin<"__builtin_riscv_bmc_tensor_matmul">,
++  Intrinsic<
++    [/* token */ llvm_i64_ty],
++    [/* fusable */ llvm_i64_ty, /* t_dst */ llvm_i64_ty, /* t_src0 */ llvm_i64_ty, /* t_src1 */ llvm_i64_ty],
++    [ImmArg<ArgIndex<0>>, ImmArg<ArgIndex<1>>, ImmArg<ArgIndex<2>>, ImmArg<ArgIndex<3>>, IntrNoMem, IntrHasSideEffects]
++>;
++
+
+Phoenix % cat llvm-project/llvm/include/llvm/IR/IntrinsicsBMC.td
+//===- IntrinsicsBMC.td - Defines BMC intrinsics ---------*- tablegen -*-===//
+//
+//                     The LLVM Compiler Infrastructure
+//
+// This file is distributed under the University of Illinois Open Source
+// License. See LICENSE.TXT for details.
+//
+//===----------------------------------------------------------------------===//
+//
+// This file defines all of the BMC-specific intrinsics.
+//
+//===----------------------------------------------------------------------===//
+
+def int_bmc_tensor_load0 : GCCBuiltin<"__builtin_bmc_tensor_load0">,
+  Intrinsic<[], [],
+  [IntrCold]>;
+
+def int_tensor_add : GCCBuiltin<"__builtin_tensor_add">,
+  Intrinsic<[], [llvm_ptr_ty, llvm_ptr_ty, llvm_ptr_ty],
+  [IntrArgMemOnly, IntrWillReturn, IntrNoFree,
+                             NoCapture<ArgIndex<0>>, NoCapture<ArgIndex<1>>,
+                             NoAlias<ArgIndex<0>>, NoAlias<ArgIndex<1>>,
+                             WriteOnly<ArgIndex<0>>, ReadOnly<ArgIndex<1>>,
+                             ReadOnly<ArgIndex<2>>,
+                             ImmArg<ArgIndex<3>>]>;
+
+
+
+// 测试源码如下：
+BMC % pwd
+/Users/cschen/git/Phoenix/llvm-project/clang/test/CodeGen/RISCV/LT/BMC
+BMC % ls
+bmc-tensor-load0.c	bmc-tensor-matmul.c	tensor-add-ace.c	tensor-add.ace		tensor-add.c
+cschen@cschendeMacBook-Air BMC % cat bmc-tensor-load0.c 
+// NOTE: ~/git/Phoenix/llvm-project/build/bin/clang -menable-experimental-extensions -march=rv64gcv0p10 -O3 -mabi=lp64d -emit-llvm -S builtins-bmc-tensor-load0.c -o -
+
+/* NOTE: cp builtins-bmc-tensor-load0.c ~/git/Phoenix/llvm-project/clang/test/. && pushd ~/git/Phoenix/llvm-project/clang/test
+~/git/Phoenix/llvm-project/build/bin/llvm-lit builtins-bmc-tensor-load0.c 
+popd */
+
+// RUN: %clang -menable-experimental-extensions -march=rv64gcv0p10 -O3 \
+// RUN:   -mabi=lp64d -emit-llvm -S %s -o - | FileCheck %s
+int foo() {
+// CHECK: call void @llvm.bmc.tensor.load0
+  __builtin_bmc_tensor_load0();
+  return 0;
+}
+
+BMC % cat bmc-tensor-matmul.c 
+// NOTE: clang -menable-experimental-extensions -march=rv64gcv0p10 -O3 -mabi=lp64d -emit-llvm -S bmc-tensor-matmul.c -o -
+
+/* NOTE: cp bmc-tensor-matmul.c ~/Phoenix/llvm-project/clang/test && pushd ~/Phoenix/llvm-project/clang/test && llvm-lit 
+ * bmc-tensor-matmul.c && popd */
+
+// RUN: %clang -menable-experimental-extensions -march=rv64gcv0p10 -O3 \
+// RUN:   -mabi=lp64d -emit-llvm -S %s -o - | FileCheck %s
+long long int foo() {
+// CHECK: call i64 @llvm.riscv.bmc.tensor.matmul
+  long long int fuse = 0;
+  long long int dst = 2;
+  long long int src0 = 0;
+  long long int src1 = 1;
+  long long int token = __builtin_riscv_bmc_tensor_matmul(fuse, dst, src0, src1);
+  return 0;
+}
+
+cschen@cschendeMacBook-Air BMC % cat tensor-add-ace.c 
+/* NOTE: 
+clang -menable-experimental-extensions -march=rv64gcv0p10 -O3 -mabi=lp64d -emit-llvm -S tensor-add-ace.c -o -
+
+clang -menable-experimental-extensions -march=rv64gcv0p10 -O3 -mabi=lp64d -S tensor-add-ace.c -o -
+bar:
+  mv	a0, zero
+  ret
+*/
+// RUN: %clang -menable-experimental-extensions -march=rv64gcv0p10 -O3 \
+// RUN:   -mabi=lp64d -emit-llvm -S %s -o - | FileCheck %s
+
+int bar(long long d, long long s0, long long s1) {
+// CHECK: call void @llvm.riscv.tensor.add
+  __builtin_riscv_tensor_add(d, s0, s1);
+  return 0;
+}
+
+cschen@cschendeMacBook-Air BMC % cat tensor-add.ace  
+// Build tensor-add.ace steps, reference Phoenix/c++-toolchain/doc/setup-copilot.md
+
+cpu {
+	name = NX27V;
+};
+
+insn tensor_add {
+	op = {in gpr d,in gpr s0,in gpr s1};
+	csim = %{
+            unsigned int   result;
+            result = 0;
+	%};
+};
+
+cschen@cschendeMacBook-Air BMC % cat tensor-add.c  
+/* NOTE: ~/git/Phoenix/llvm-project/build/bin/clang -menable-experimental-extensions -march=rv64gcv0p10 -O3 -mabi=lp64d -emit-llvm -S builtins-tensor-add.c -o -
+
+cp builtins-tensor-add.c ~/git/Phoenix/llvm-project/clang/test/. && pushd ~/git/Phoenix/llvm-project/clang/test
+~/git/Phoenix/llvm-project/build/bin/llvm-lit builtins-tensor-add.c 
+popd */
+
+// RUN: %clang -menable-experimental-extensions -march=rv64gcv0p10 -O3 \
+// RUN:   -mabi=lp64d -emit-llvm -S %s -o - | FileCheck %s
+// RUN: %clang_cc1 -triple riscv64 -target-feature +f -target-feature +d -target-feature +experimental-v \
+// RUN:   -target-feature +experimental-zfh -emit-llvm %s -o - | FileCheck %s
+int foo(int *d, int *s0, int *s1) {
+// CHECK: call void @llvm.tensor.add
+  __builtin_tensor_add(d, s0, s1);
+  return 0;
+}
