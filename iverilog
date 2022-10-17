@@ -1,0 +1,10 @@
+objcopy can do elf -> hex as follows,
+
+:~/git/lbt/exlbt/input/build-cpu032I-el$ ~/llvm/test/build/bin/llvm-objcopy -O ihex a.out a.hex
+~/git/lbt/exlbt/input/build-cpu032I-el$ ~/llvm/test/build/bin/llvm-objcopy -j.data -O ihex a.out a.hex.data
+~/git/lbt/exlbt/input/build-cpu032I-el$ ~/llvm/test/build/bin/llvm-objcopy -j.rodata -O ihex a.out a.hex.rodata
+
+a.hex format:
+// :020000021000EC <:> <02:length> <0000> <02> <1000:start-address from 10000> <EC:CRC>
+// :1000D4006A75737469663A202225313073220A00E6 <:> <10:length> <00:fix-pattern> <D4..00:data-16-bytes> <E6:CR> : total-43-bytes
+
