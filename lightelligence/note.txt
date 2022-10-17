@@ -1,9 +1,8 @@
-﻿Auroa SW:
+﻿Auroa(outer name)/PACE2.0(inner name)
+https://confluence.int.lightelligence.co/display/AUR/Digital+Architecture+Specification
+
+Auroa SW:
 https://confluence.int.lightelligence.co/display/PHX/SDK+Architecture
-
-
-https://dev.azure.com/LightelligencePlatform/_git/Vanguard?path=/digital/rtl/pmem/SPEC.md&_a=preview
-
 
 
 Phoenix git repository:
