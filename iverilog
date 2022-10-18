@@ -1,5 +1,19 @@
 objcopy can do elf -> hex as follows,
 
+objcopy -d verilog a.out a.hex
+@000100D4
+6A 75 73 74 69 66 3A 20 22 25 31 30 73 22 0A 00
+68 65 78 20 25 30 32 78 20 3D 20 30 30 0A 00 74
+65 73 74 5F 74 61 69 6C 63 61 6C 6C 28 35 29 20
+...
+@00010500
+10 00 00 00 00 00 00 00 01 7A 52 00 01 7C 0F 01
+1B 0D 0D 00 18 00 00 00 18 00 00 00 E4 06 02 00
+74 00 00 00 00 44 0E 10 48 8E 01 8C 02 44 0D 0C
+...
+
+
+
 :~/git/lbt/exlbt/input/build-cpu032I-el$ ~/llvm/test/build/bin/llvm-objcopy -O ihex a.out a.hex
 ~/git/lbt/exlbt/input/build-cpu032I-el$ ~/llvm/test/build/bin/llvm-objcopy -j.data -O ihex a.out a.hex.data
 ~/git/lbt/exlbt/input/build-cpu032I-el$ ~/llvm/test/build/bin/llvm-objcopy -j.rodata -O ihex a.out a.hex.rodata
