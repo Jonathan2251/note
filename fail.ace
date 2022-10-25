@@ -1,0 +1,12 @@
+cpu {
+	name = NX27V;
+};
+
+insn tensor_fail {
+	op = {out gpr d, imm4 s0, imm4 s1};
+	csim = %{
+            unsigned int   result;
+            result = 0;
+            d = result;
+	%};
+};
