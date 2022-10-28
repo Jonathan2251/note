@@ -3,8 +3,7 @@ cpu {
 };
 
 insn tensor_fail {
-//	op = {out gpr d, imm4 s0, imm4 s1};
-	op = {out gpr d, uimm4 s0, uimm4 s1};
+	op = {out gpr d, imm4 s0, imm4 s1};
 	csim = %{
             unsigned int   result;
             result = 0;
