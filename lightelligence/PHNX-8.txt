@@ -1,0 +1,54 @@
+﻿Merge request created in: https://jira.int.lightelligence.co/browse/PHNX-8
+### Ticket-PHNX-8 fix: Andes' regression test fails fixed
+
+### Description
+- Andes fixes the 91 regression failures.
+- Andes previous release has 91 failures in regression of llvm/test/CodeGen/RISCV.
+- Code changes: One file for API and 82 files for regression as the following in next section Code Comment.
+
+### Code Comment
+Andes fixes the 91 regression failures by adjusting instruction orders in test cases of lvm/test/CodeGen/RISCV.
+For instance, `access-fixed-objects-by-rvv.l` the following,
+>; RV64IV-NEXT:    .cfi_def_cfa_offset 544
+>
+>; RV64IV-NEXT:    csrr a0, vlenb
+>
+> ; RV64IV-NEXT:    sub sp, sp, a0
+>
+> **+; RV64IV-NEXT:    addi a0, sp, 24**
+>
+> **+; RV64IV-NEXT:    vl1re64.v v25, (a0)**
+>
+> ; RV64IV-NEXT:    ld a0, 536(sp)
+>
+> ; RV64IV-NEXT:    addi a1, sp, 544
+>
+> ~~; RV64IV-NEXT:    vl1re64.v v25, (a1)~~
+>
+> ~~; RV64IV-NEXT:    addi a1, sp, 24~~
+>
+> ; RV64IV-NEXT:    vl1re64.v v26, (a1)
+>
+> ; RV64IV-NEXT:    vsetvli zero, a0, e64, m1, ta, mu
+>
+> ~~; RV64IV-NEXT:    vadd.vv v8, v26, v25~~
+>
+> **+; RV64IV-NEXT:    vadd.vv v8, v25, v26**
+>
+> ; RV64IV-NEXT:    csrr a0, vlenb
+>
+> ; RV64IV-NEXT:    add sp, sp, a0
+>
+> ; RV64IV-NEXT:    addi sp, sp, 544
+
+### Reviewers
+@myu @gliu @jlin
+
+### Unit Test Change
+Changed 82 tests in llvm-project/llvm/test/ for instructions reorder as this merge request.
+
+### API Change
+n/a
+
+### Documentation
+Link to the doc - Phoenix/c++-toolchain/doc/AndesRelease.md The whole file is added for this Jira.
