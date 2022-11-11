@@ -1,0 +1,35 @@
+﻿Ref. Andes_Custom_Extension_User_Manual_CUM006_V2.1.pdf of https://lightelligence.sharepoint.com/:f:/s/Phoenix/EpaZ7Y1xMPdNpkPVONkP0_sBtVfjCq6LG6XI8R3jnsziUQ?e=TJCPjh
+
+Note:
+Andes' toolchain:
+
+Usage:
+  1. Enter ETX XFCE:
+  2. In Terminal:
+       $ module load andesight/500
+       $ AndeSight
+  3-1. File - Import project - General - Existing Projects into Workspace - Select archive file 
+  3-2. Other Locations - Computer - global - tools - Andestech - AndesSite_STD_v500 - demo - vector_demo
+  3-3. <Pick project .tgz> - src - <file>.c - build(icon hammer) 
+       Floating license ：8888@10.200.4.11
+       
+       
+Here are the TVM discussion record and the slide. Please help to distribute them to whom are interested in.
+Link：https://pan.baidu.com/s/1dOeutraqtDagke4BN3pdzw
+Fetch code：39p2
+
+
+
+ACE:
+
+ref file. work/Andes/ACE demo for Lightelligence 07192021
+Firefox: check license server: http://10.200.4.11:8888/LicenseServer/login
+
+jonathanchen@idc-swg3:/nfs/homes/jonathanchen$ cp -rf /global/tools/Andestech/AndeSight_STD_v500/COPILOT .
+cd COPILOT/demo/cpu_test_case/27series/NX27V/test_ace
+
+export PATH=$PATH:/global/tools/Andestech/AndeSight_STD_v500/COPILOT/bin
+
+copilot -a -r test_inst.v test_inst.ace -L http://10.200.4.11:8888/checkout/ace
+
+Will generate four directories ace_auto_test  include  lib  rtl. ace_auto_test is empty and others have files.
