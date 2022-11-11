@@ -67,6 +67,7 @@ Delete remote first, then local
 // delete remote branch
 git push origin --delete <branch>
 ex. git push origin --delete jonathan_fix_bug_a
+// To update the local list of remote branches
 git remote update origin --prune
 // delete local branch
 git branch -D <branch>
