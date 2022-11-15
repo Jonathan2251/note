@@ -27,60 +27,6 @@ Build with branch rvv-intrinsic will get rvv support as follows,
    ...
    12512: 57 10 08 02   vfadd.vv        v0, v0, v16
 
-2. Pass for running RISCV/rvv regression tests on clang/llvm and hello.c
-
-build: reference riscv-toolchain-setup.sh
-
-~/llvm/llvm-project$ git log
-commit 845561ec9d009445c99b51b61810b57bb03e1303 (HEAD -> main, origin/main, origin/HEAD)
-
-jonathanchen@hz-compiler1:/local/git/llvm-project/clang/test/CodeGen/RISCV/rvv-intrinsics$ /local/git/llvm-project/build_riscv64_newlib/bin/llvm-lit .
-  ...
-  Passed: 160
-
-jonathanchen@hz-compiler1:/local/git/llvm-project/llvm/test/CodeGen/RISCV/rvv$ /local/git/llvm-project/build_riscv64_newlib/bin/llvm-lit .
-  ...
-  Passed: 694
-
-
-A. bare-metal (newlib):
-
-/local/git$ /local/riscv_newlib/bin/clang -march=riscv64 hello.c -v
-...
-clang-14: error: invalid arch name 'riscv64', string must begin with rv32{i,e,g} or rv64{i,g}
-
-pass:
-/local/riscv_newlib/bin/clang hello.c -o hello_newlib -v
-/local/riscv_newlib/bin/clang -fuse-ld=lld hello.c -o hello_newlib -mno-relax -v
-/local/riscv_newlib/bin/clang -fuse-ld=lld -march=rv64g hello.c -o hello_newlib -v
-/local/riscv_newlib/bin/clang -march=rv32i -mabi=ilp32 hello.c -o hello_newlib_rv32i -v
-/local/riscv_newlib/bin/clang -march=rv64g hello.c -o hello_newlib_rv64g -v
-/local/riscv_newlib/bin/clang -march=rv64imac -mabi=lp64 hello.c -o hello_newlib -v
-ls -l
-223492 Nov 12 06:48 hello_newlib_rv32i
-132448 Nov 12 06:48 hello_newlib_rv64g
-ls /local/riscv_newlib/riscv64-unknown-elf/lib
-crt0.o     libc.a       libg.a       libgloss.a       libm.a       libnosys.a  nano.specs   rv32i    rv32im    rv32imafc  rv64imafdc
-ldscripts  libc_nano.a  libg_nano.a  libgloss_nano.a  libm_nano.a  libsim.a    nosys.specs  rv32iac  rv32imac  rv64imac   sim.specs
-
-
-fail:
-/local/riscv_newlib/bin/clang -fuse-ld=lld hello.c -o hello_newlib -v
-ld.lld: error: hello.c:(.text+0x0): relocation R_RISCV_ALIGN requires unimplemented linker relaxation; recompile with -mno-relax
-
-
-B. linux:
-
-pass:
-/local/riscv_linux/bin/clang hello.c -o hello_linux -v
-/local/riscv_linux/bin/clang -march=rv64g hello.c -o hello_linux -v
-
-fail:
-/local/riscv_linux/bin/clang -fuse-ld=lld -march=rv64g hello.c -o hello_linux -v
-ld.lld: error: static-reloc.c:(.text+0x0): relocation R_RISCV_ALIGN requires unimplemented linker relaxation; recompile with -mno-relax
-/local/riscv_linux/bin/clang -fuse-ld=lld hello.c -o hello_linux -v
-ld.lld: error: static-reloc.c:(.text+0x0): relocation R_RISCV_ALIGN requires unimplemented linker relaxation; recompile with -mno-relax
-
 
 3. Install on Mac:
 // brew install riscv-gnu-toolchain
