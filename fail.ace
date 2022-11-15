@@ -1,3 +1,5 @@
+// ~/andes/riscv/COPILOT/bin/copilot --gen-llvm fail.ace
+
 cpu {
 	name = NX27V;
 };
