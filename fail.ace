@@ -1,4 +1,5 @@
-// ~/andes/riscv/COPILOT/bin/copilot --gen-llvm fail.ace
+// ~/git/note$ ~/andes/riscv/COPILOT/bin/copilot --gen-llvm fail.ace
+// ~/git/note$ cp -rf llvm/* ~/andes/riscv/git/Phoenix/llvm-project/.
 
 cpu {
 	name = NX27V;

@@ -1,4 +1,4 @@
-; ~/andes/riscv/git/Phoenix/llvm-project/build_riscv_newlib/bin/llc -mtriple=riscv64 test_fail_ace.ll -o -
+; ~/andes/riscv/git/Phoenix/llvm-project/build_riscv_newlib/bin/llc -mtriple=riscv64 test_fail_ace.ll -debug -print-before-all -o -
 
 ; ModuleID = 'test_fail_ace.c'
 source_filename = "test_fail_ace.c"
