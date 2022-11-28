@@ -1,0 +1,14 @@
+diff --git a/llvm-project/llvm/include/llvm/IR/IntrinsicsRISCV.td b/llvm-project/llvm/include/llvm/IR/IntrinsicsRISCV.td
+index 8ee6901f2..5da49f6bb 100644
+--- a/llvm-project/llvm/include/llvm/IR/IntrinsicsRISCV.td
++++ b/llvm-project/llvm/include/llvm/IR/IntrinsicsRISCV.td
+@@ -456,7 +456,8 @@ let TargetPrefix = "riscv" in {
+   class RISCVSaturatingBinaryAAXNoMask
+         : Intrinsic<[llvm_anyvector_ty],
+                     [LLVMMatchType<0>, llvm_any_ty, llvm_anyint_ty],
+-                    [IntrNoMem, IntrHasSideEffects]>, RISCVVIntrinsic {
++//                    [IntrNoMem, IntrHasSideEffects]>, RISCVVIntrinsic {
++                    [IntrNoMem]>, RISCVVIntrinsic {
+     let SplatOperand = 2;
+   }
+   // For Saturating binary operations with mask.
