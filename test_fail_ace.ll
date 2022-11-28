@@ -7,9 +7,9 @@ target triple = "riscv64-unknown-unknown-elf"
 
 define dso_local i64 @foo() nounwind {
 entry:
-  %token = alloca i64, align 8
+;  %token = alloca i64, align 8
   %0 = call i64 @llvm.riscv.tensor.fail(i32 0, i32 1)
-  store i64 %0, i64* %token, align 8
+;  store i64 %0, i64* %token, align 8
   ret i64 0
 }
 
