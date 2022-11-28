@@ -2,14 +2,6 @@
 git fetch --all
 git reset --hard origin/master
 
-// clone specific branch 13.x
-git clone -b <branch> <repo>
-e.g. git clone -b 13.x https://github.com/llvm/llvm-project.git
-// checkout specific tag llvmorg-13.0.0
-git clone -b <tag> <repo>
-e.g. git clone -b llvmorg-13.0.0 https://github.com/llvm/llvm-project.git
-// ref. https://www.jiyik.com/w/git/git-clone
-
 // workbranch rebase to master
 git checkout workbranch
 // git merge the commits from #num into 1
@@ -29,6 +21,13 @@ git tag --delete tagname
 // checkout tag
 git checkout tags/<tag_name> -b <branch_name>
 eg. git checkout tags/llvmorg-13.0.0 -b llvmorg-13.0.0
+// clone specific branch 13.x
+git clone -b <branch> <repo>
+e.g. git clone -b 13.x https://github.com/llvm/llvm-project.git
+// checkout specific tag llvmorg-13.0.0
+git clone -b <tag> <repo>
+e.g. git clone -b llvmorg-13.0.0 https://github.com/llvm/llvm-project.git
+// ref. https://www.jiyik.com/w/git/git-clone
 
 // Biren steps
 // on master branch
