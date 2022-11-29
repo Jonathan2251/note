@@ -1,4 +1,5 @@
 ; ~/andes/riscv/git/Phoenix/llvm-project/build_riscv_newlib/bin/llc -mtriple=riscv64 -mattr=+experimental-v test-vsaddu-rv64.ll -O3 -o -
+; ~/riscv/git/13.0.0/llvm-project/build_riscv_newlib/bin/llc -mtriple=riscv64 -mattr=+experimental-v test-vsaddu-rv64.ll -O3 -o -
 
 declare <vscale x 1 x i8> @llvm.riscv.vsaddu.nxv1i8.nxv1i8(
   <vscale x 1 x i8>,
