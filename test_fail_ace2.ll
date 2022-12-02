@@ -9,4 +9,4 @@ entry:
 }
 
 ; Function Attrs: nounwind
-declare i64 @llvm.riscv.tensor.fail(i32 immarg, i32 immarg)
+declare i64 @llvm.riscv.tensor.fail(i64 immarg, i64 immarg)
