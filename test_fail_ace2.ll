@@ -3,7 +3,7 @@
 define dso_local i64 @foo() nounwind {
 entry:
 ;  %token = alloca i64, align 8
-  %0 = call i64 @llvm.riscv.tensor.fail(i32 0, i32 1)
+  %0 = call i64 @llvm.riscv.tensor.fail(i64 0, i64 1)
 ;  store i64 %0, i64* %token, align 8
   ret i64 0
 }
