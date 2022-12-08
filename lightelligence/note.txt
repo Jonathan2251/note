@@ -4,6 +4,9 @@ https://confluence.int.lightelligence.co/display/AUR/Digital+Architecture+Specif
 Auroa SW:
 https://confluence.int.lightelligence.co/display/PHX/SDK+Architecture
 
+oMac spec:
+https://confluence.int.lightelligence.co/display/EIC/oMAC+Spec
+
 
 Phoenix git repository:
 https://gitlab.lightelligence.co/software/Phoenix.git
