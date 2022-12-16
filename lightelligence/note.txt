@@ -30,6 +30,15 @@ ace % pwd
 https://idc-code1.int.lightelligence.co/rtl_dv_dev/Aurora/-/tree/ckuo/sanity/digital/rtl/acpu/AURORA_ACE/ace
 
 
+Imperas:
+https://confluence.int.lightelligence.co/display/LIB/User+guide+of+Platform
+// switch gcc version
+sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.9 202
+sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-7 203
+Imperas Users in China
+jonathanchen@idc-qa4:~/git/lemur$ ./pe_run.sh --program PE/cpu0=./little_math_coprocessor/application/test_bmc_op_poll.elf
+
+
 Auroa Word doc for CEO:
 https://lightelligence.sharepoint.com/sites/Software2-ProjectManagement/Shared%20Documents/Forms/AllItems.aspx?id=%2Fsites%2FSoftware2%2DProjectManagement%2FShared%20Documents%2FProject%20Management%2FPace%202%2E0%20design%20spec&p=true&ct=1662714447805&or=Teams%2DHL&ga=1
 
