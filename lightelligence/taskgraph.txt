@@ -1,0 +1,6 @@
+TaskGraph:
+https://confluence.int.lightelligence.co/pages/viewpage.action?pageId=116956059#C++Compiler-TaskGraphCompiler
+References:
+AI Engine Kernel and Graph Programming Guide:
+https://docs.xilinx.com/r/en-US/ug1079-ai-engine-kernel-coding/AI-Engine-API
+
