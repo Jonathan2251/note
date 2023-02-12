@@ -13,3 +13,8 @@ install:
     https://phoenixnap.com/kb/install-pip-mac
     curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
     python3 get-pip.py
+
+Format usb:
+1. diskutil eraseDisk free EMPTY /dev/disk4s2
+2. In Disk Utility, Erase disk
+https://discussions.apple.com/thread/8132218
