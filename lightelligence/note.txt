@@ -1,4 +1,7 @@
-﻿Auroa(outer name)/PACE2.0(inner name)
+﻿离职交接流程-Kara Zhong-2023-02-07
+https://oa.lightelligence.co:8443/spa/workflow/static4form/index.html?_rdm=1677467820042#/main/workflow/req?requestid=86415&isovertime=&_key=jt6hhy
+
+Auroa(outer name)/PACE2.0(inner name)
 https://confluence.int.lightelligence.co/display/AUR/Digital+Architecture+Specification
 
 Auroa SW:
@@ -22,6 +25,9 @@ LT ACE:
 % git clone https://gitlab.lightelligence.co/rtl_dv_dev/Aurora.git
 % cd Aurora
 Aurora % git checkout -b ckuo/sanity origin/ckuo/sanity
+Aurora $ git log
+commit 0d797176f26a330e6c32ea985e936f836abf0f99 (HEAD -> ckuo/sanity, origin/ckuo/sanity)
+...
 cd digital/rtl/acpu/AURORA_ACE/ace
 ace % ls
 ace0_bmc.ace	ace0_bmc.v	ace0_bmc.vh	ace1_pmem.ace	ace1_pmem.v	ace1_pmem.vh	ace2_mail.ace	ace2_mail.v	asp_define.vh	isa_yis.h
