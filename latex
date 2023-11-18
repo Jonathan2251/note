@@ -4,3 +4,9 @@ TexShop:
 draw:
   Tikz
 
+Tikz: 
+tuturial:
+https://www.math.uni-leipzig.de/~hellmund/LaTeX/pgf-tut.pdf
+menu:
+https://www.bu.edu/math/files/2013/08/tikzpgfmanual.pdf
+
